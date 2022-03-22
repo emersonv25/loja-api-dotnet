@@ -1,0 +1,14 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace api_produtos.Models.Object
+{
+    public class ParamCategoria
+    {
+        [Required(ErrorMessage = "O nome da categória é obrigatório", AllowEmptyStrings = false)]
+        public string Nome { get; set; }
+    }
+}
