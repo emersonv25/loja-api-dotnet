@@ -83,6 +83,8 @@ namespace api_produtos.Controllers
                     produto.Nome = param.Nome;
                 if (!String.IsNullOrEmpty(param.Descricao))
                     produto.Descricao = param.Descricao;
+                if (param.Valor > 0)
+                    produto.Valor = param.Valor;
                 if (param.CategoriaId > 0)
                     produto.CategoriaId = param.CategoriaId;
                 if (param.Ativo != null && param.Ativo != produto.Ativo)
@@ -112,7 +114,7 @@ namespace api_produtos.Controllers
                 }
                 _db.Produto.Remove(produto);
                 await _db.SaveChangesAsync();
-                return Ok();
+                return Ok(new { message = "Deletado com sucesso !" });
             }
             catch (Exception ex)
             {
