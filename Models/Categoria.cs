@@ -14,5 +14,7 @@ namespace api_produtos.Models
         public string Nome { get; set; }
         [JsonIgnore]
         public List<Produto> Produtos { get; set; }
+
+
     }
 }
