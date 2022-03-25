@@ -37,7 +37,7 @@ namespace api_produtos.Controllers
             var produto = _db.Produto.Include(i => i.Categoria).FirstOrDefault(p => p.Id == id);
             if(produto == null)
             {
-                return NotFound(new { error = "Produto não encontrado" });
+                return NotFound(new { errors = "Produto não encontrado" });
             }
             return produto;
         }
@@ -62,7 +62,7 @@ namespace api_produtos.Controllers
             }
             catch(Exception ex)
             {
-                return BadRequest(new { error = "Não foi possivel cadastrar o produto: " + ex.Message });
+                return BadRequest(new { errors = "Não foi possivel cadastrar o produto: " + ex.Message });
             }
 
         }
@@ -76,7 +76,7 @@ namespace api_produtos.Controllers
                 Produto produto = await _db.Produto.FindAsync(id);
                 if (produto == null)
                 {
-                    return BadRequest(new { error = "Produto não encontrado" });
+                    return NotFound(new { errors = "Produto não encontrado" });
                 }
 
                 if (!String.IsNullOrEmpty(param.Nome))
@@ -97,7 +97,7 @@ namespace api_produtos.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { error = "Não foi possivel cadastrar o usuário: " + ex.Message });
+                return BadRequest(new { errors = "Não foi possivel cadastrar o usuário: " + ex.Message });
             }
         }
 
@@ -110,7 +110,7 @@ namespace api_produtos.Controllers
                 Produto produto = await _db.Produto.FindAsync(id);
                 if (produto == null)
                 {
-                    return BadRequest(new { error = "Produto não encontrada" });
+                    return NotFound(new { errors = "Produto não encontrada" });
                 }
                 _db.Produto.Remove(produto);
                 await _db.SaveChangesAsync();
@@ -118,7 +118,7 @@ namespace api_produtos.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { error = "Não foi possivel deletar o produto: " + ex.Message });
+                return BadRequest(new { errors = "Não foi possivel deletar o produto: " + ex.Message });
             }
 
         }

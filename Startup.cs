@@ -11,7 +11,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace api_produtos
@@ -36,7 +38,18 @@ namespace api_produtos
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "api_produtos", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { 
+                    Title = "api_produtos", 
+                    Version = "v1", 
+                    Description = "API para manipulação de dados referentes a produtos e categorias",
+                    Contact = new OpenApiContact()
+                    {
+                        Name = "Emerson",
+                        Email = "emersondejesussantos@hotmail.com",
+                        Url = new Uri("https://www.linkedin.com/in/emerson-de-jesus-santos-303640195/")
+                    },
+                });
+
             });
         }
 
