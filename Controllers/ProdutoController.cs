@@ -90,7 +90,7 @@ namespace api_produtos.Controllers
                 {
                     if (_db.Categoria.FirstOrDefault(c => c.Id == param.CategoriaId) == null)
                     {
-                        return NotFound(new { error = "Categória não encontrado" });
+                        return NotFound(new { error = "Categoria não encontrada" });
                     }
                     produto.CategoriaId = param.CategoriaId.Value;
                 }
@@ -117,7 +117,7 @@ namespace api_produtos.Controllers
                 Produto produto = await _db.Produto.FindAsync(id);
                 if (produto == null)
                 {
-                    return NotFound(new { error = "Produto não encontrada" });
+                    return NotFound(new { error = "Produto não encontrado" });
                 }
                 _db.Produto.Remove(produto);
                 await _db.SaveChangesAsync();
