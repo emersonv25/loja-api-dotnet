@@ -1,6 +1,9 @@
 # api-produtos
 Está api tem o intuito de ser um CRUD simples para manipulação de dados referente apenas a produtos e categorias, devido ao curto tempo para desenvolve-la. E no futuro evoluir para um sistema de e-commerce, para o meu repositório pessoal.
 
+## Demonstração
+ + Disponível em: https://api-produtos.azurewebsites.net/swagger/index.html
+
 ## Tecnologias Utilizadas
 
  + ASP.NET Core 5.0
