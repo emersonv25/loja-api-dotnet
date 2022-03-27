@@ -8,20 +8,25 @@ Está api tem o intuito de ser um CRUD simples para manipulação de dados refer
  + Microsoft SQL Server
 ## Instalação
  + 1 - Abra seu Visual Studio
- + 2 - Modifique a string de conexão em appsetings.json de acordo com seu banco de dados SQL Server
+ + 2 - Modifique a ConnectionString em appsettings.json de acordo com seu banco de dados SQL Server
+
+            "ConnectionStrings": {       
+                "DefaultConnection":  "Data Source=localhost;Initial Catalog=dbProdutos;Persist Security Info=True;User ID=sa;Password=admin"  
+            },
+
  + 3 - Execute os seguintes comandos
     + Add-Migration Initial
     + Update-Database
  + 4 - Compile e Execute o projeto api-produtos
 
-## Métodos
+## Requisições
 Requisições para a API segue os seguintes padrões:
-| Método | Descrição |
+| Tipo | Descrição |
 |---|---|
 | `GET` | Retorna informações de um ou mais registros. |
 | `POST` | Utilizado para criar um novo registro. |
 | `PUT` | Atualiza dados de um registro. |
-| `DELETE` | Remove um registro do sistema. |
+| `DELETE` | Remove um registro. |
 
 ## Respostas
 
@@ -31,7 +36,7 @@ Requisições para a API segue os seguintes padrões:
 | `400` | Genérico: qualquer excessão na execução da requisição.|
 | `404` | Registro pesquisado não encontrado (Not found).|
 
-# Group Resources
+# Endpoints
 
 ## Categoria [api/categoria]
 As categorias tem um relacionamento de 1:N com produtos e tem o intuito de organizar, uma categoria possui vários produtos, mas um produto pertence a uma unica categoria.
@@ -42,7 +47,7 @@ As categorias tem um relacionamento de 1:N com produtos e tem o intuito de organ
 
         GET /api/Categoria/
 
-+ Response 200 (application/json)
++ Response 200:
 
         [
             {
@@ -63,18 +68,18 @@ As categorias tem um relacionamento de 1:N com produtos e tem o intuito de organ
     + id (required, number) -> id da Categoria
 
 + Request
+
             GET /api/Categoria/1
 
-+ Response 200 (application/json)
++ Response 200: sucesso
 
-        GET /api/Categoria/1
             {
                 "id": 1,
                 "nome": "Hardware"
             }
 
 
-+ Response 404 (application/json) não foi encontrado nenhum registro
++ Response 404: não foi encontrado nenhum registro
 
           {
               "error": "Categoria não encontrada" 
@@ -89,7 +94,7 @@ As categorias tem um relacionamento de 1:N com produtos e tem o intuito de organ
 
             GET /api/Categoria/Hardware
 
-+ Response 200 (application/json) sucesso
++ Response 200: sucesso
 
         {
             "id": 1,
@@ -107,14 +112,14 @@ As categorias tem um relacionamento de 1:N com produtos e tem o intuito de organ
                 "nome" : "Placa Mae"
             }
 
-+ Response 200 (application/json) registrado com sucesso
++ Response 200: registrado com sucesso
 
         {
             "id": 2,
             "nome": "Placa Mãe"
         },
 
-+ Response 400 (application/json) Quando ocorrer algum erro
++ Response 400: Quando ocorrer algum erro
 
         {
             "error": "Não foi possivel cadastrar a categoria: "
@@ -132,20 +137,20 @@ As categorias tem um relacionamento de 1:N com produtos e tem o intuito de organ
                 "nome" : "Placa Mae"
             }
 
-+ Response 200 (application/json) registrado com sucesso
++ Response 200: registrado com sucesso
 
         {
             "id": 2,
             "nome": "Placa Mãe"
         },
 
-+ Response 404 (application/json) não foi encontrado nenhum registro
++ Response 404: não foi encontrado nenhum registro
 
           {
               "error": "Categoria não encontrada" 
           }
 
-+ Response 400 (application/json) Quando ocorrer algum erro
++ Response 400: Quando ocorrer algum erro
 
         {
             "error": "Não foi possivel editar a categoria: "
@@ -158,24 +163,24 @@ As categorias tem um relacionamento de 1:N com produtos e tem o intuito de organ
         
         PUT /api/Categoria/2
 
-+ Response 200 (application/json) registrado com sucesso
++ Response 200: registrado com sucesso
 
         OK
 
-+ Response 404 (application/json) não foi encontrado nenhum registro
++ Response 404: não foi encontrado nenhum registro
 
           {
               "error": "Categoria não encontrada" 
           }
 
-+ Response 400 (application/json) Quando ocorrer algum erro
++ Response 400: Quando ocorrer algum erro
 
         {
             "error": "Não foi possivel deletar a categoria: "
         }
 
 
-## Categoria [api/categoria]
+## Produto [api/produto]
 
 Os produtos são relacionados com uma categoria e contem as seguintes informações: Nome, Descricao, Valor, Quantidade, Ativo e CategoriaId
 
@@ -185,7 +190,7 @@ Os produtos são relacionados com uma categoria e contem as seguintes informaç�
 
         GET /api/Produto
 
-+ Response 200 (application/json)
++ Response 200:
 
         [
             {
@@ -214,9 +219,8 @@ Os produtos são relacionados com uma categoria e contem as seguintes informaç�
 
             GET /api/Produto/1
 
-+ Response 200 (application/json)
++ Response 200:
 
-        GET /api/Produto/1
         {
             "id": 1,
             "nome": "Geforce RTX",
@@ -232,7 +236,7 @@ Os produtos são relacionados com uma categoria e contem as seguintes informaç�
         }
 
 
-+ Response 404 (application/json) não foi encontrado nenhum registro
++ Response 404: não foi encontrado nenhum registro
 
           {
               "error": "Produto não encontrado" 
@@ -247,7 +251,7 @@ Os produtos são relacionados com uma categoria e contem as seguintes informaç�
 
             GET /api/produto/geforce
 
-+ Response 200 (application/json) sucesso
++ Response 200: sucesso
 
         {
             "id": 1,
@@ -279,7 +283,7 @@ Os produtos são relacionados com uma categoria e contem as seguintes informaç�
                 "categoriaId": 1,
             }
 
-+ Response 200 (application/json) registrado com sucesso
++ Response 200: registrado com sucesso
 
         {
             "id": 1,
@@ -295,7 +299,7 @@ Os produtos são relacionados com uma categoria e contem as seguintes informaç�
             }
         }
 
-+ Response 400 (application/json) Quando ocorrer algum erro
++ Response 400: Quando ocorrer algum erro
 
         {
             "error": "Não foi possivel cadastrar o produto: "
@@ -318,7 +322,7 @@ Os produtos são relacionados com uma categoria e contem as seguintes informaç�
             }
         // Todos os parametros são opcionais, caso esteja vazio, 0 ou null serão ignorados.
 
-+ Response 200 (application/json) registrado com sucesso
++ Response 200: registrado com sucesso
 
         {
             "id": 1,
@@ -334,13 +338,13 @@ Os produtos são relacionados com uma categoria e contem as seguintes informaç�
             }
         }
 
-+ Response 404 (application/json) não foi encontrado nenhum registro
++ Response 404: não foi encontrado nenhum registro
 
           {
               "error": "produto não encontrado" 
           }
 
-+ Response 400 (application/json) Quando ocorrer algum erro
++ Response 400: Quando ocorrer algum erro
 
         {
             "error": "Não foi possivel editar o produto: "
@@ -353,17 +357,17 @@ Os produtos são relacionados com uma categoria e contem as seguintes informaç�
         
         PUT /api/Produto/2
 
-+ Response 200 (application/json) Deletado com sucesso
++ Response 200: Deletado com sucesso
 
         OK
 
-+ Response 404 (application/json) não foi encontrado nenhum registro
++ Response 404: não foi encontrado nenhum registro
 
           {
               "error": "Produto não encontrado" 
           }
 
-+ Response 400 (application/json) Quando ocorrer algum erro
++ Response 400: Quando ocorrer algum erro
 
         {
             "error": "Não foi possivel deletar o produto: "
