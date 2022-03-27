@@ -88,7 +88,7 @@ namespace api_produtos.Controllers
                     produto.Valor = param.Valor.Value;
                 if (param.CategoriaId != null && param.CategoriaId > 0)
                 {
-                    if(_db.Categoria.FirstOrDefault(c => c.Id == id) == null)
+                    if (_db.Categoria.FirstOrDefault(c => c.Id == param.CategoriaId) == null)
                     {
                         return NotFound(new { error = "Categória não encontrado" });
                     }
@@ -104,7 +104,7 @@ namespace api_produtos.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { error = "Não foi possivel cadastrar o usuário: " + ex.Message });
+                return BadRequest(new { error = "Não foi possivel cadastrar o produto: " + ex.Message });
             }
         }
 
