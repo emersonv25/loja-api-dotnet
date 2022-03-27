@@ -36,31 +36,18 @@ namespace api_produtos.Controllers
             return await _db.Categoria.ToListAsync();
         }
 
-        /// <summary>
-        /// Retorna uma categoria a partir de seu Id
-        /// </summary>
-        /// <param name="id">Id da categoria</param>
-        /// <remarks> 
-        /// Exemplo de requisição
-        /// GET /api/Categoria/1
-        /// {
-        ///     "id": 1,
-        ///     "nome": "Hardware"
-        /// }
-        /// </remarks>
-        /// <returns></returns>
+        // GET api/<ProdutoController>/5
         [HttpGet("{id:int}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<dynamic>> GetById(int id)
         {
             var categoria = _db.Categoria.FirstOrDefault(c => c.Id == id);
             if (categoria == null)
             {
-                return NotFound(new { errors = "Categoria não encontrada" });
+                return NotFound(new { error = "Categoria não encontrada" });
             }
             return categoria;
         }
+        // GET api/<ProdutoController>/Hardware
         [HttpGet("{nome}")]
         public ActionResult<IEnumerable<Categoria>> GetByName(string nome)
         {
@@ -79,7 +66,7 @@ namespace api_produtos.Controllers
             }
             catch(Exception ex)
             {
-                return BadRequest(new { errors = "Não foi possivel cadastrar a categoria: " + ex.Message });
+                return BadRequest(new { error = "Não foi possivel cadastrar a categoria: " + ex.Message });
             }
 
         }
@@ -93,7 +80,7 @@ namespace api_produtos.Controllers
                 Categoria categoria = await _db.Categoria.FindAsync(id);
                 if (categoria == null)
                 {
-                    return BadRequest(new { errors = "Categoria não encontrada" });
+                    return BadRequest(new { error = "Categoria não encontrada" });
                 }
                 categoria.Nome = param.Nome;
                 await _db.SaveChangesAsync();
@@ -101,7 +88,7 @@ namespace api_produtos.Controllers
             }
             catch(Exception ex)
             {
-                return BadRequest(new { errors = "Não foi possivel editar a categoria: " + ex.Message });
+                return BadRequest(new { error = "Não foi possivel editar a categoria: " + ex.Message });
             }
         }
 
@@ -114,7 +101,7 @@ namespace api_produtos.Controllers
                 Categoria categoria = await _db.Categoria.FindAsync(id);
                 if(categoria == null)
                 {
-                    return NotFound(new { errors = "Categoria não encontrada" });
+                    return NotFound(new { error = "Categoria não encontrada" });
                 }
                 _db.Categoria.Remove(categoria);
                 await _db.SaveChangesAsync();
@@ -122,7 +109,7 @@ namespace api_produtos.Controllers
             }
             catch(Exception ex)
             {
-                return BadRequest(new { errors = "Não foi possivel deletar a categoria: " + ex.Message });
+                return BadRequest(new { error = "Não foi possivel deletar a categoria: " + ex.Message });
             }
 
         }

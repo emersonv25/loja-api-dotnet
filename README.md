@@ -1,6 +1,19 @@
 # api-produtos
 Está api tem o intuito de ser um CRUD simples para manipulação de dados referente apenas a produtos e categorias, devido ao curto tempo para desenvolve-la. E no futuro evoluir para um sistema de e-commerce, para o meu repositório pessoal.
 
+## Tecnologias Utilizadas
+
+ + ASP.NET Core 5.0
+ + Entity Framework
+ + Microsoft SQL Server
+## Instalação
+ + 1 - Abra seu Visual Studio
+ + 2 - Modifique a string de conexão em appsetings.json de acordo com seu banco de dados SQL Server
+ + 3 - Execute os seguintes comandos
+    + Add-Migration Initial
+    + Update-Database
+ + 4 - Compile e Execute o projeto api-produtos
+
 ## Métodos
 Requisições para a API segue os seguintes padrões:
 | Método | Descrição |
@@ -21,7 +34,7 @@ Requisições para a API segue os seguintes padrões:
 # Group Resources
 
 ## Categoria [api/categoria]
-As categorias tem um relacionamento de 1:N com produtos e tem o intuito de organizar, uma categoria possui vários produtos, mas um produto pertence a uma unica categória.
+As categorias tem um relacionamento de 1:N com produtos e tem o intuito de organizar, uma categoria possui vários produtos, mas um produto pertence a uma unica categoria.
 
 ### Listar todos [GET api/categoria]
 
@@ -47,7 +60,7 @@ As categorias tem um relacionamento de 1:N com produtos e tem o intuito de organ
 ### Listar a partir do ID [GET api/categoria/{id}]
 
 + Params
-    + id (required, number) -> id da Categória
+    + id (required, number) -> id da Categoria
 
 + Request
             GET /api/Categoria/1
@@ -70,7 +83,7 @@ As categorias tem um relacionamento de 1:N com produtos e tem o intuito de organ
 ### Listar a partir do Nome [GET api/categoria/{nome}]
 
 + Params
-    + nome (required, string) -> nome da Categória
+    + nome (required, string) -> nome da Categoria
 
 + Request
 
@@ -104,7 +117,7 @@ As categorias tem um relacionamento de 1:N com produtos e tem o intuito de organ
 + Response 400 (application/json) Quando ocorrer algum erro
 
         {
-            "errors": "Não foi possivel cadastrar a categoria: "
+            "error": "Não foi possivel cadastrar a categoria: "
         }
 
 ### Editar uma Categoria [PUT api/categoria]
@@ -135,7 +148,7 @@ As categorias tem um relacionamento de 1:N com produtos e tem o intuito de organ
 + Response 400 (application/json) Quando ocorrer algum erro
 
         {
-            "errors": "Não foi possivel editar a categoria: "
+            "error": "Não foi possivel editar a categoria: "
         }
 ### Deletar uma Categoria [DELETE api/categoria/{id}]
 + Params
@@ -158,10 +171,200 @@ As categorias tem um relacionamento de 1:N com produtos e tem o intuito de organ
 + Response 400 (application/json) Quando ocorrer algum erro
 
         {
-            "errors": "Não foi possivel deletar a categoria: "
+            "error": "Não foi possivel deletar a categoria: "
         }
 
 
 ## Categoria [api/categoria]
 
-Os produtos são, bem, produtos, eles são relacionados com uma catégoria e contem as seguintes informações: Nome, Descricao, Valor, Quantidade, Ativo e CategoriaId
+Os produtos são relacionados com uma categoria e contem as seguintes informações: Nome, Descricao, Valor, Quantidade, Ativo e CategoriaId
+
+### Listar todos [GET api/produto]
+
++ Request
+
+        GET /api/Produto
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": 1,
+                "nome": "Geforce RTX",
+                "descricao": "Uma placa de vídeo",
+                "valor": 5999.99,
+                "quantidade": 5,
+                "ativo": true,
+                "categoriaId": 1,
+                "categoria": {
+                    "id": 1,
+                    "nome": "Hardware"
+                }
+            }
+        ]
+
+    Caso não encontre nenhum registro irá retornar um array vazio []
+
+### Listar a partir do ID [GET api/produto/{id}]
+
++ Params
+    + id (required, number) -> id do produto
+
++ Request
+
+            GET /api/Produto/1
+
++ Response 200 (application/json)
+
+        GET /api/Produto/1
+        {
+            "id": 1,
+            "nome": "Geforce RTX",
+            "descricao": "Uma placa de vídeo",
+            "valor": 5999.99,
+            "quantidade": 5,
+            "ativo": true,
+            "categoriaId": 1,
+            "categoria": {
+                "id": 1,
+                "nome": "Hardware"
+            }
+        }
+
+
++ Response 404 (application/json) não foi encontrado nenhum registro
+
+          {
+              "error": "Produto não encontrado" 
+          }
+
+### Listar a partir do Nome [GET api/produto/{nome}]
+
++ Params
+    + nome (required, string) -> nome da Categoria
+
++ Request
+
+            GET /api/produto/geforce
+
++ Response 200 (application/json) sucesso
+
+        {
+            "id": 1,
+            "nome": "Geforce RTX",
+            "descricao": "Uma placa de vídeo",
+            "valor": 5999.99,
+            "quantidade": 5,
+            "ativo": true,
+            "categoriaId": 1,
+            "categoria": {
+                "id": 1,
+                "nome": "Hardware"
+            }
+        }
+
+    Caso não encontre nenhum registro irá retornar um array vazio []
+### Registrar Produto [POST api/produto]
+
++ Request
+
+        POST /api/Produto/
+            Body:
+            {            
+                "nome": "Geforce RTX",
+                "descricao": "Uma placa de vídeo",
+                "valor": 5999.99,
+                "quantidade": 5,
+                "ativo": true,
+                "categoriaId": 1,
+            }
+
++ Response 200 (application/json) registrado com sucesso
+
+        {
+            "id": 1,
+            "nome": "Geforce RTX",
+            "descricao": "Uma placa de vídeo",
+            "valor": 5999.99,
+            "quantidade": 5,
+            "ativo": true,
+            "categoriaId": 1,
+            "categoria": {
+                "id": 1,
+                "nome": "Hardware"
+            }
+        }
+
++ Response 400 (application/json) Quando ocorrer algum erro
+
+        {
+            "error": "Não foi possivel cadastrar o produto: "
+        }
+
+### Editar um Produto [PUT api/produto]
++ Params
+    + id (required, number) --> id do produto
+
++ Request
+        
+        PUT /api/Categoria/1
+            {            
+                "nome": "Geforce RTX",
+                "descricao": "Uma placa de vídeo",
+                "valor": 5999.99, 
+                "quantidade": 5, 
+                "ativo": true, 
+                "categoriaId": 1, 
+            }
+        // Todos os parametros são opcionais, caso esteja vazio, 0 ou null serão ignorados.
+
++ Response 200 (application/json) registrado com sucesso
+
+        {
+            "id": 1,
+            "nome": "Geforce RTX",
+            "descricao": "Uma placa de vídeo",
+            "valor": 5999.99,
+            "quantidade": 5,
+            "ativo": true,
+            "categoriaId": 1,
+            "categoria": {
+                "id": 1,
+                "nome": "Hardware"
+            }
+        }
+
++ Response 404 (application/json) não foi encontrado nenhum registro
+
+          {
+              "error": "produto não encontrado" 
+          }
+
++ Response 400 (application/json) Quando ocorrer algum erro
+
+        {
+            "error": "Não foi possivel editar o produto: "
+        }
+### Deletar uma Produto [DELETE api/produto/{id}]
++ Params
+    + id (required, number) --> id da cetegória
+
++ Request
+        
+        PUT /api/Produto/2
+
++ Response 200 (application/json) Deletado com sucesso
+
+        OK
+
++ Response 404 (application/json) não foi encontrado nenhum registro
+
+          {
+              "error": "Produto não encontrado" 
+          }
+
++ Response 400 (application/json) Quando ocorrer algum erro
+
+        {
+            "error": "Não foi possivel deletar o produto: "
+        }
