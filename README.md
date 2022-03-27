@@ -47,7 +47,7 @@ As categorias tem um relacionamento de 1:N com produtos e tem o intuito de organ
 
         GET /api/Categoria/
 
-+ Response 200:
++ Response 200: sucesso
 
         [
             {
@@ -161,7 +161,7 @@ As categorias tem um relacionamento de 1:N com produtos e tem o intuito de organ
 
 + Request
         
-        PUT /api/Categoria/2
+        DELETE /api/Categoria/2
 
 + Response 200: registrado com sucesso
 
@@ -190,7 +190,7 @@ Os produtos são relacionados com uma categoria e contem as seguintes informaç�
 
         GET /api/Produto
 
-+ Response 200:
++ Response 200: sucesso
 
         [
             {
@@ -219,7 +219,7 @@ Os produtos são relacionados com uma categoria e contem as seguintes informaç�
 
             GET /api/Produto/1
 
-+ Response 200:
++ Response 200: sucesso
 
         {
             "id": 1,
@@ -355,7 +355,7 @@ Os produtos são relacionados com uma categoria e contem as seguintes informaç�
 
 + Request
         
-        PUT /api/Produto/2
+        DELETE /api/Produto/2
 
 + Response 200: Deletado com sucesso
 
