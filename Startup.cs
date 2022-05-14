@@ -1,4 +1,6 @@
 using api_produtos.Data;
+using api_produtos.Services;
+using api_produtos.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -30,12 +32,14 @@ namespace api_produtos
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+           
             string msSqlConnection = Configuration.GetConnectionString("DefaultConnection");
 
             services.AddDbContextPool<AppDbContext>(options =>
                 options.UseSqlServer(msSqlConnection));
 
             services.AddControllers();
+            services.AddTransient<IAuthService, AuthService>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { 
