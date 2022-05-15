@@ -35,8 +35,10 @@ namespace api_produtos
            
             string msSqlConnection = Configuration.GetConnectionString("DefaultConnection");
 
-            services.AddDbContextPool<AppDbContext>(options =>
-                options.UseSqlServer(msSqlConnection));
+            services.AddDbContextPool<AppDbContext>(options => {
+                options.UseSqlServer(msSqlConnection);
+                options.UseLazyLoadingProxies();
+            });
 
             services.AddControllers();
             services.AddTransient<IAuthService, AuthService>();

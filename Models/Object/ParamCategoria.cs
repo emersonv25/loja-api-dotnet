@@ -10,5 +10,6 @@ namespace api_produtos.Models.Object
     {
         [Required(ErrorMessage = "O nome da categoria é obrigatório", AllowEmptyStrings = false)]
         public string Nome { get; set; }
+        public int? idPai { get; set; }
     }
 }

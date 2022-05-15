@@ -8,8 +8,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace api_produtos.Controllers
 {
     [Route("api/[controller]")]
@@ -25,27 +23,22 @@ namespace api_produtos.Controllers
 
         // GET: api/<CategoriaController>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Produto>>> GetAll()
+        public ActionResult<IEnumerable<Produto>> GetAll()
         {
-            return await _db.Produto.Include(i => i.Categoria).ToListAsync();
+            return _db.Produto.Include(x => x.Categoria).ToList();
         }
 
         // GET api/<CategoriaController>/5
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<dynamic>> GetById(int id)
+        public ActionResult<IEnumerable<Produto>> GetById(int id)
         {
-            var produto = _db.Produto.Include(i => i.Categoria).FirstOrDefault(p => p.Id == id);
-            if(produto == null)
-            {
-                return NotFound(new { error = "Produto não encontrado" });
-            }
-            return produto;
+            return _db.Produto.Include(x => x.Categoria).Where(i => i.idProduto == id).ToList();
         }
         // GET api/<CategoriaController>/Placa
         [HttpGet("{nome}")]
         public ActionResult<IEnumerable<Produto>> GetByName(string nome)
         {
-            return _db.Produto.Include(i => i.Categoria).Where(i => i.Nome.Contains(nome)).ToList();
+            return _db.Produto.Include(i => i.Categoria).Where(i => i.Nome.Contains(nome) || i.Categoria.Nome.Contains(nome) || i.Descricao.Contains(nome)).ToList();
         }
 
         // POST api/<ProdutoController>
@@ -55,7 +48,7 @@ namespace api_produtos.Controllers
             try
             {
                 Produto produto = new Produto { Nome = param.Nome, Valor = param.Valor, Descricao = param.Descricao, 
-                    Quantidade = param.Quantidade, CategoriaId = param.CategoriaId, Ativo = param.Ativo };
+                    Quantidade = param.Quantidade, idCategoria = param.CategoriaId, Ativo = param.Ativo };
 
                 _db.Produto.Add(produto);
                 await _db.SaveChangesAsync();
@@ -88,11 +81,11 @@ namespace api_produtos.Controllers
                     produto.Valor = param.Valor.Value;
                 if (param.CategoriaId != null && param.CategoriaId > 0)
                 {
-                    if (_db.Categoria.FirstOrDefault(c => c.Id == param.CategoriaId) == null)
+                    if (_db.Categoria.FirstOrDefault(c => c.idCategoria == param.CategoriaId) == null)
                     {
                         return NotFound(new { error = "Categoria não encontrada" });
                     }
-                    produto.CategoriaId = param.CategoriaId.Value;
+                    produto.idCategoria = param.CategoriaId.Value;
                 }
                 if (param.Ativo != null && param.Ativo != produto.Ativo)
                     produto.Ativo = param.Ativo.Value;

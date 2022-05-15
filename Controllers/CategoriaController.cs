@@ -24,23 +24,18 @@ namespace api_produtos.Controllers
             _db = context;
         }
 
-
-        /// <summary>
-        /// Lista todos as categorias registrada.
-        /// </summary>
-        /// <returns>Uma lista com as categorias</returns>
-        /// <response code="200">Retorna os itens da categoria cadastrados</response>
+        // GET api/<ProdutoController>/
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Categoria>>> GetAll()
+        public ActionResult<IEnumerable<Categoria>> GetAll()
         {
-            return await _db.Categoria.ToListAsync();
+            return _db.Categoria.Where(x => x.idPai == null).Include(x => x.SubCategorias).ToList();
         }
 
         // GET api/<ProdutoController>/5
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<dynamic>> GetById(int id)
+        public ActionResult<dynamic> GetById(int id)
         {
-            var categoria = _db.Categoria.FirstOrDefault(c => c.Id == id);
+            var categoria = _db.Categoria.Where(x => x.idCategoria == id).Include(x => x.SubCategorias).ToList();
             if (categoria == null)
             {
                 return NotFound(new { error = "Categoria não encontrada" });
@@ -51,7 +46,7 @@ namespace api_produtos.Controllers
         [HttpGet("{nome}")]
         public ActionResult<IEnumerable<Categoria>> GetByName(string nome)
         {
-            return _db.Categoria.Where(i => i.Nome.Contains(nome)).ToList();
+            return _db.Categoria.Where(i => i.Nome.Contains(nome)).Include(x => x.SubCategorias).ToList();
         }
         // POST api/<CategoriaController>
         [HttpPost]
@@ -59,7 +54,7 @@ namespace api_produtos.Controllers
         {
             try
             {
-                Categoria categoria = new Categoria { Nome = param.Nome };
+                Categoria categoria = new Categoria { Nome = param.Nome, idPai = param.idPai != 0 ? param.idPai : null };
                 _db.Categoria.Add(categoria);
                 await _db.SaveChangesAsync();
                 return Ok(categoria);
@@ -83,6 +78,8 @@ namespace api_produtos.Controllers
                     return BadRequest(new { error = "Categoria não encontrada" });
                 }
                 categoria.Nome = param.Nome;
+                if(param.idPai != 0)
+                    categoria.idPai = param.idPai;
                 await _db.SaveChangesAsync();
                 return Ok(categoria);
             }

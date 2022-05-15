@@ -22,7 +22,8 @@ namespace api_produtos.Models
             this.Ativo = Ativo;
         }
 
-        public int Id { get; set; }
+        [Key]
+        public int idUsuario { get; set; }
 
         public string Username { get; set; }
 
