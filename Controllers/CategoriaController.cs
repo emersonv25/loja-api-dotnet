@@ -24,29 +24,24 @@ namespace api_produtos.Controllers
             _db = context;
         }
 
-        // GET api/<ProdutoController>/
+        // GET api/<CategoriaController>/
         [HttpGet]
         public ActionResult<IEnumerable<Categoria>> GetAll()
         {
             return _db.Categoria.Where(x => x.idPai == null).Include(x => x.SubCategorias).ToList();
         }
 
-        // GET api/<ProdutoController>/5
+        // GET api/<CategoriaController>/5
         [HttpGet("{id:int}")]
-        public ActionResult<dynamic> GetById(int id)
+        public ActionResult<IEnumerable<Categoria>> GetById(int id)
         {
-            var categoria = _db.Categoria.Where(x => x.idCategoria == id).Include(x => x.SubCategorias).ToList();
-            if (categoria == null)
-            {
-                return NotFound(new { error = "Categoria não encontrada" });
-            }
-            return categoria;
+            return _db.Categoria.Where(x => x.idCategoria == id).Include(x => x.SubCategorias).ToList();
         }
-        // GET api/<ProdutoController>/Hardware
+        // GET api/<CategoriaController>/Hardware
         [HttpGet("{nome}")]
         public ActionResult<IEnumerable<Categoria>> GetByName(string nome)
         {
-            return _db.Categoria.Where(i => i.Nome.Contains(nome)).Include(x => x.SubCategorias).ToList();
+            return _db.Categoria.Where(i => i.nmCategoria.Contains(nome)).Include(x => x.SubCategorias).ToList();
         }
         // POST api/<CategoriaController>
         [HttpPost]
@@ -54,7 +49,7 @@ namespace api_produtos.Controllers
         {
             try
             {
-                Categoria categoria = new Categoria { Nome = param.Nome, idPai = param.idPai != 0 ? param.idPai : null };
+                Categoria categoria = new Categoria { nmCategoria = param.nmCategoria, idPai = param.idPai != 0 ? param.idPai : null };
                 _db.Categoria.Add(categoria);
                 await _db.SaveChangesAsync();
                 return Ok(categoria);
@@ -77,7 +72,7 @@ namespace api_produtos.Controllers
                 {
                     return BadRequest(new { error = "Categoria não encontrada" });
                 }
-                categoria.Nome = param.Nome;
+                categoria.nmCategoria = param.nmCategoria;
                 if(param.idPai != 0)
                     categoria.idPai = param.idPai;
                 await _db.SaveChangesAsync();

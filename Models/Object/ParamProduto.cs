@@ -9,32 +9,34 @@ namespace api_produtos.Models.Object
     public class ParamProduto
     {
         [Required(ErrorMessage = "O nome do produto é obrigatório", AllowEmptyStrings = false)]
-        public string Nome { get; set; }
+        public string nmProduto { get; set; }
 
-        public string Descricao { get; set; }
+        public string dsProduto { get; set; }
 
         [Required(ErrorMessage = "O valor é obrigatório", AllowEmptyStrings = false)]
-        public decimal Valor { get; set; }
+        public decimal vlProduto { get; set; }
+        public decimal vlPromocional { get; set; }
 
         [Required(ErrorMessage = "A quantidade disponível é obrigatório", AllowEmptyStrings = false)]
-        public int Quantidade { get; set; }
+        public int qtdEstoque { get; set; }
 
-        public bool Ativo { get; set; }
+        public bool flAtivo { get; set; }
 
-        public int CategoriaId { get; set; }
+        public int idCategoria { get; set; }
     }
     public class ParamEditarProduto
     {
-        public string Nome { get; set; }
+        public string nmProduto { get; set; }
 
-        public string Descricao { get; set; }
+        public string dsProduto { get; set; }
 
-        public decimal? Valor { get; set; }
+        public decimal? vlProduto { get; set; }
+        public decimal? vlPromocional { get; set; }
 
-        public int? Quantidade { get; set; }
+        public int? qtdEstoque { get; set; }
 
-        public bool? Ativo { get; set; }
+        public bool? flAtivo { get; set; }
 
-        public int? CategoriaId { get; set; }
+        public int? idCategoria { get; set; }
     }
 }

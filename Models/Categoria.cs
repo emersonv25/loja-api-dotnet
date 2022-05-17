@@ -13,7 +13,7 @@ namespace api_produtos.Models
     {
         [Key]
         public int idCategoria { get; set; }
-        public string Nome { get; set; }
+        public string nmCategoria { get; set; }
         [JsonIgnore]
         public virtual ICollection<Produto> Produtos { get; set; }
         public int? idPai { get; set; }

@@ -87,7 +87,7 @@ namespace api_produtos.Services
                 }
                 usuario.Nome = usuarioEditado.Nome;
                 usuario.Username = usuarioEditado.Username;
-                usuario.Ativo = usuarioEditado.Ativo;
+                usuario.flAtivo = usuarioEditado.flAtivo;
                 usuario.Cargo = usuarioEditado.Cargo;
                 usuario.Email = usuarioEditado.Email;
                 await _context.SaveChangesAsync();

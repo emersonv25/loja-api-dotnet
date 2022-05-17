@@ -18,12 +18,10 @@ namespace api_produtos.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly AppDbContext _context;
         private readonly IAuthService _authService;
 
-        public AuthController(AppDbContext context, IAuthService authService)
+        public AuthController(IAuthService authService)
         {
-            _context = context;
             _authService = authService;
         }
 
@@ -37,7 +35,7 @@ namespace api_produtos.Controllers
                 return BadRequest(new {error = "Usuário ou senha inválidos"});
             }
 
-            if(usuario.Ativo == 0){
+            if(usuario.flAtivo == true){
                 return BadRequest(new {error = "Usuário Inativo !"});
             }
 

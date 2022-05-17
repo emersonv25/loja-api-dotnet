@@ -12,14 +12,14 @@ namespace api_produtos.Models
             this.Username = Username;
             this.Password = Password;
         }
-        public Usuario(string Username, string Password, string Nome, string Email, string Cargo = "usuario", int Ativo = 1)
+        public Usuario(string Username, string Password, string Nome, string Email, string Cargo = "usuario", bool flAtivo = true)
         {
             this.Username = Username;
             this.Password = Password;
             this.Nome = Nome;
             this.Email = Email;
             this.Cargo = Cargo;
-            this.Ativo = Ativo;
+            this.flAtivo = flAtivo;
         }
 
         [Key]
@@ -31,7 +31,7 @@ namespace api_produtos.Models
 
         public string Password { get; set; }
 
-        public int Ativo { get; set; }
+        public bool? flAtivo { get; set; }
 
         public string Cargo { get; set; }
 
