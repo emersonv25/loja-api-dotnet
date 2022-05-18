@@ -25,20 +25,20 @@ namespace api_produtos.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Produto>> GetAll()
         {
-            return _db.Produto.Include(x => x.Categoria).ToList();
+            return _db.Produto.Include(c => c.Categoria).Include(m => m.ModeloProduto).ToList();
         }
 
         // GET api/<ProdutoController>/5
         [HttpGet("{id:int}")]
         public ActionResult<IEnumerable<Produto>> GetById(int id)
         {
-            return _db.Produto.Include(x => x.Categoria).Where(i => i.idProduto == id).ToList();
+            return _db.Produto.Include(c => c.Categoria).Where(i => i.IdProduto == id).ToList();
         }
         // GET api/<CategoriaController>/Placa
         [HttpGet("{nome}")]
         public ActionResult<IEnumerable<Produto>> GetByName(string nome)
         {
-            return _db.Produto.Include(i => i.Categoria).Where(i => i.nmProduto.Contains(nome) || i.Categoria.nmCategoria.Contains(nome) || i.dsProduto.Contains(nome)).ToList();
+            return _db.Produto.Include(c => c.Categoria).Include(m => m.ModeloProduto).Where(i => i.NomeProduto.Contains(nome) || i.Categoria.NomeCategoria.Contains(nome) || i.DescricaoProduto.Contains(nome)).ToList();
         }
 
         // POST api/<ProdutoController>
@@ -47,8 +47,8 @@ namespace api_produtos.Controllers
         {
             try
             {
-                Produto produto = new Produto { nmProduto = param.nmProduto, vlProduto = param.vlProduto, dsProduto = param.dsProduto, 
-                    qtdEstoque = param.qtdEstoque, idCategoria = param.idCategoria, flAtivo = param.flAtivo };
+                Produto produto = new Produto { NomeProduto = param.NomeProduto, ValorProduto = param.ValorProduto, DescricaoProduto = param.DescricaoProduto, 
+                    EstoqueProduto = param.EstoqueProduto, IdCategoria = param.IdCategoria, FlAtivoProduto = param.FlAtivoProduto };
 
                 _db.Produto.Add(produto);
                 await _db.SaveChangesAsync();
@@ -73,26 +73,26 @@ namespace api_produtos.Controllers
                     return NotFound(new { error = "Produto não encontrado" });
                 }
 
-                if (!String.IsNullOrEmpty(param.nmProduto))
-                    produto.nmProduto = param.nmProduto;
-                if (!String.IsNullOrEmpty(param.dsProduto))
-                    produto.dsProduto = param.dsProduto;
-                if (param.vlProduto != null && param.vlProduto > 0)
-                    produto.vlProduto = param.vlProduto.Value;
-                if (param.vlPromocional != null && param.vlPromocional > 0)
-                    produto.vlPromocional = param.vlPromocional.Value;
-                if (param.idCategoria != null && param.idCategoria > 0)
+                if (!String.IsNullOrEmpty(param.NomeProduto))
+                    produto.NomeProduto = param.NomeProduto;
+                if (!String.IsNullOrEmpty(param.DescricaoProduto))
+                    produto.DescricaoProduto = param.DescricaoProduto;
+                if (param.ValorProduto != null && param.ValorProduto > 0)
+                    produto.ValorProduto = param.ValorProduto.Value;
+                if (param.DescontoProduto != null && param.DescontoProduto > 0)
+                    produto.DescontoProduto = param.DescontoProduto.Value;
+                if (param.IdCategoria != null && param.IdCategoria > 0)
                 {
-                    if (_db.Categoria.FirstOrDefault(c => c.idCategoria == param.idCategoria) == null)
+                    if (_db.Categoria.FirstOrDefault(c => c.IdCategoria == param.IdCategoria) == null)
                     {
                         return NotFound(new { error = "Categoria não encontrada" });
                     }
-                    produto.idCategoria = param.idCategoria.Value;
+                    produto.IdCategoria = param.IdCategoria.Value;
                 }
-                if (param.flAtivo != null && param.flAtivo != produto.flAtivo)
-                    produto.flAtivo = param.flAtivo.Value;
-                if (param.qtdEstoque != null && param.qtdEstoque.Value > 0)
-                    produto.qtdEstoque = param.qtdEstoque.Value;
+                if (param.FlAtivoProduto != null && param.FlAtivoProduto != produto.FlAtivoProduto)
+                    produto.FlAtivoProduto = param.FlAtivoProduto.Value;
+                if (param.EstoqueProduto != null && param.EstoqueProduto.Value > 0)
+                    produto.EstoqueProduto = param.EstoqueProduto.Value;
 
                 await _db.SaveChangesAsync();
                 return Ok(produto);

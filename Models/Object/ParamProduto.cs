@@ -9,34 +9,34 @@ namespace api_produtos.Models.Object
     public class ParamProduto
     {
         [Required(ErrorMessage = "O nome do produto é obrigatório", AllowEmptyStrings = false)]
-        public string nmProduto { get; set; }
+        public string NomeProduto { get; set; }
 
-        public string dsProduto { get; set; }
+        public string DescricaoProduto { get; set; }
 
         [Required(ErrorMessage = "O valor é obrigatório", AllowEmptyStrings = false)]
-        public decimal vlProduto { get; set; }
-        public decimal vlPromocional { get; set; }
+        public decimal ValorProduto { get; set; }
+        public decimal DescontoProduto { get; set; }
 
         [Required(ErrorMessage = "A quantidade disponível é obrigatório", AllowEmptyStrings = false)]
-        public int qtdEstoque { get; set; }
+        public int EstoqueProduto { get; set; }
 
-        public bool flAtivo { get; set; }
+        public bool FlAtivoProduto { get; set; }
 
-        public int idCategoria { get; set; }
+        public int IdCategoria { get; set; }
     }
     public class ParamEditarProduto
     {
-        public string nmProduto { get; set; }
+        public string NomeProduto { get; set; }
 
-        public string dsProduto { get; set; }
+        public string DescricaoProduto { get; set; }
 
-        public decimal? vlProduto { get; set; }
-        public decimal? vlPromocional { get; set; }
+        public decimal? ValorProduto { get; set; }
+        public decimal? DescontoProduto { get; set; }
 
-        public int? qtdEstoque { get; set; }
+        public int? EstoqueProduto { get; set; }
 
-        public bool? flAtivo { get; set; }
+        public bool? FlAtivoProduto { get; set; }
 
-        public int? idCategoria { get; set; }
+        public int? IdCategoria { get; set; }
     }
 }

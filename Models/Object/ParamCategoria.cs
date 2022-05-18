@@ -9,7 +9,7 @@ namespace api_produtos.Models.Object
     public class ParamCategoria
     {
         [Required(ErrorMessage = "O nome da categoria é obrigatório", AllowEmptyStrings = false)]
-        public string nmCategoria { get; set; }
-        public int? idPai { get; set; }
+        public string NomeCategoria { get; set; }
+        public int? IdCategoriaPai { get; set; }
     }
 }

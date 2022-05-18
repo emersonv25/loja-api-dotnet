@@ -28,20 +28,20 @@ namespace api_produtos.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Categoria>> GetAll()
         {
-            return _db.Categoria.Where(x => x.idPai == null).Include(x => x.SubCategorias).ToList();
+            return _db.Categoria.Where(x => x.IdCategoriaPai == null).Include(x => x.SubCategorias).ToList();
         }
 
         // GET api/<CategoriaController>/5
         [HttpGet("{id:int}")]
         public ActionResult<IEnumerable<Categoria>> GetById(int id)
         {
-            return _db.Categoria.Where(x => x.idCategoria == id).Include(x => x.SubCategorias).ToList();
+            return _db.Categoria.Where(x => x.IdCategoria == id).Include(x => x.SubCategorias).ToList();
         }
         // GET api/<CategoriaController>/Hardware
         [HttpGet("{nome}")]
         public ActionResult<IEnumerable<Categoria>> GetByName(string nome)
         {
-            return _db.Categoria.Where(i => i.nmCategoria.Contains(nome)).Include(x => x.SubCategorias).ToList();
+            return _db.Categoria.Where(i => i.NomeCategoria.Contains(nome)).Include(x => x.SubCategorias).ToList();
         }
         // POST api/<CategoriaController>
         [HttpPost]
@@ -49,7 +49,7 @@ namespace api_produtos.Controllers
         {
             try
             {
-                Categoria categoria = new Categoria { nmCategoria = param.nmCategoria, idPai = param.idPai != 0 ? param.idPai : null };
+                Categoria categoria = new Categoria { NomeCategoria = param.NomeCategoria, IdCategoriaPai = param.IdCategoriaPai != 0 ? param.IdCategoriaPai : null };
                 _db.Categoria.Add(categoria);
                 await _db.SaveChangesAsync();
                 return Ok(categoria);
@@ -72,9 +72,9 @@ namespace api_produtos.Controllers
                 {
                     return BadRequest(new { error = "Categoria não encontrada" });
                 }
-                categoria.nmCategoria = param.nmCategoria;
-                if(param.idPai != 0)
-                    categoria.idPai = param.idPai;
+                categoria.NomeCategoria = param.NomeCategoria;
+                if(param.IdCategoriaPai != 0)
+                    categoria.IdCategoriaPai = param.IdCategoriaPai;
                 await _db.SaveChangesAsync();
                 return Ok(categoria);
             }

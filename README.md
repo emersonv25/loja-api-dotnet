@@ -14,7 +14,7 @@ Está api tem o intuito de ser um CRUD simples para manipulação de dados refer
  + 2 - Modifique a ConnectionString em appsettings.json de acordo com seu banco de dados SQL Server
 
             "ConnectionStrings": {       
-                "DefaultConnection":  "Data Source=localhost;Initial Catalog=dbProdutos;Persist Security Info=True;User ID=sa;Password=admin"  
+                "DefaultConnection":  "Data Source=localhost;Initial Catalog=dbProduto;Persist Security Info=True;User ID=sa;Password=admin"  
             },
 
  + 3 - Execute os seguintes comandos

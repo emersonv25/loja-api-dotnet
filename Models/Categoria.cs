@@ -12,11 +12,11 @@ namespace api_produtos.Models
     public class Categoria
     {
         [Key]
-        public int idCategoria { get; set; }
-        public string nmCategoria { get; set; }
+        public int IdCategoria { get; set; }
+        public string NomeCategoria { get; set; }
         [JsonIgnore]
-        public virtual ICollection<Produto> Produtos { get; set; }
-        public int? idPai { get; set; }
+        public virtual ICollection<Produto> Produto { get; set; }
+        public int? IdCategoriaPai { get; set; }
         public virtual ICollection<Categoria> SubCategorias { get; set; }
 
 

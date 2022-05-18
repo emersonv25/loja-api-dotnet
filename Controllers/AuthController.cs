@@ -35,7 +35,7 @@ namespace api_produtos.Controllers
                 return BadRequest(new {error = "Usuário ou senha inválidos"});
             }
 
-            if(usuario.flAtivo == true){
+            if(usuario.FlAtivoUsuario == true){
                 return BadRequest(new {error = "Usuário Inativo !"});
             }
 
