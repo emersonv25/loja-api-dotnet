@@ -9,6 +9,7 @@ namespace api_produtos.Models
         [Key]
         public int IdModeloProduto{ get; set; }
         public string NomeModelo { get; set; }
+        public bool? FlAtivoModelo { get; set; }
         public int IdProduto { get; set; }
         [ForeignKey("IdProduto")]
         [JsonIgnore]

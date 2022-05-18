@@ -14,6 +14,7 @@ namespace api_produtos.Models
         [Key]
         public int IdCategoria { get; set; }
         public string NomeCategoria { get; set; }
+        public bool? FlAtivoCategoria { get; set; }
         [JsonIgnore]
         public virtual ICollection<Produto> Produto { get; set; }
         public int? IdCategoriaPai { get; set; }

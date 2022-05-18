@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Proxies;
-
+using api_produtos.Services;
 
 namespace api_produtos.Data
 {
@@ -25,6 +25,7 @@ namespace api_produtos.Data
             modelBuilder.Entity<Produto>().Property(p => p.ValorProduto).HasColumnType("decimal(18,2)").IsRequired();
             modelBuilder.Entity<Produto>().Property(p => p.DescontoProduto).HasColumnType("decimal(18,2)").IsRequired().HasDefaultValue(0.00m);
             modelBuilder.Entity<Produto>().Property(p => p.FlAtivoProduto).HasDefaultValueSql("1").IsRequired();
+            modelBuilder.Entity<ModeloProduto>().Property(p => p.FlAtivoModelo).HasDefaultValueSql("1").IsRequired();
 
             modelBuilder.Entity<Produto>().HasData(new Produto{IdProduto = 1, NomeProduto = "NVIDIA Geforce RTX", DescricaoProduto = "Uma placa de video", ValorProduto = 4999.99m, DescontoProduto = 4000.00m, EstoqueProduto = 10, FlAtivoProduto = true, IdCategoria = 3});
             modelBuilder.Entity<ModeloProduto>().HasData(new ModeloProduto { IdModeloProduto = 1, NomeModelo = "3080 12GB", IdProduto = 1 });
@@ -33,9 +34,11 @@ namespace api_produtos.Data
             modelBuilder.Entity<Produto>().HasData(new Produto { IdProduto = 2, NomeProduto = "AMD Radeon RX", DescricaoProduto = "Uma placa de video", ValorProduto = 4999.99m, DescontoProduto = 4000.00m, EstoqueProduto = 10, FlAtivoProduto = true, IdCategoria = 4 });
             modelBuilder.Entity<ModeloProduto>().HasData(new ModeloProduto { IdModeloProduto = 3, NomeModelo = "6800 12GB", IdProduto = 2 });
             modelBuilder.Entity<ModeloProduto>().HasData(new ModeloProduto { IdModeloProduto = 4, NomeModelo = "6700 8GB", IdProduto = 2 });
+            
             // CATEGORIA
             modelBuilder.Entity<Categoria>().HasKey(p => p.IdCategoria);
             modelBuilder.Entity<Categoria>().Property(p => p.NomeCategoria).IsRequired();
+            modelBuilder.Entity<Categoria>().Property(p => p.FlAtivoCategoria).HasDefaultValueSql("1").IsRequired();
             modelBuilder.Entity<Categoria>().HasMany(p => p.SubCategorias).WithOne().HasForeignKey(t => t.IdCategoriaPai).HasPrincipalKey(t => t.IdCategoria);
 
             modelBuilder.Entity<Categoria>().HasData(new Categoria { IdCategoria = 1, NomeCategoria = "Hardware"});
@@ -50,11 +53,11 @@ namespace api_produtos.Data
             modelBuilder.Entity<Usuario>().HasIndex(u => u.Email).IsUnique(true);
             modelBuilder.Entity<Usuario>().Property(u => u.Password).HasMaxLength(128).IsRequired();
             modelBuilder.Entity<Usuario>().Property(u => u.FlAtivoUsuario).HasDefaultValueSql("1").IsRequired();
-            modelBuilder.Entity<Usuario>().Property(u => u.Cargo).HasDefaultValue("usuario").IsRequired();
+            modelBuilder.Entity<Usuario>().Property(u => u.Admin).HasDefaultValueSql("0").IsRequired();
             modelBuilder.Entity<Usuario>().Property(u => u.Email).HasMaxLength(256).IsRequired();
             modelBuilder.Entity<Usuario>()
                 .HasData(
-                    new Usuario { IdUsuario = 1, Username = "admin", NomeCompleto = "Administrador", Password = "admin", FlAtivoUsuario = true, Cargo = "admin", Email = "admin@admin.com" }
+                    new Usuario { IdUsuario = 1, Username = "admin", NomeCompleto = "Administrador", Password = Utils.sha256_hash("admin"), FlAtivoUsuario = true, Admin = true, Email = "admin@admin.com" }
                 );
         }
 

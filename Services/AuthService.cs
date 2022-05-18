@@ -33,7 +33,7 @@ namespace api_produtos.Services
         }
         public async Task<Usuario> Cadastrar(ParamCadastro usuario)
         {
-            Usuario user = new Usuario();
+            Usuario user;
             try
             {
                 var password = Utils.sha256_hash(usuario.Password);
@@ -87,7 +87,7 @@ namespace api_produtos.Services
                 usuario.NomeCompleto = usuarioEditado.NomeCompleto;
                 usuario.Username = usuarioEditado.Username;
                 usuario.FlAtivoUsuario = usuarioEditado.FlAtivoUsuario;
-                usuario.Cargo = usuarioEditado.Cargo;
+                usuario.Admin = usuarioEditado.Admin;
                 usuario.Email = usuarioEditado.Email;
                 await _context.SaveChangesAsync();
             }

@@ -48,7 +48,7 @@ namespace api_produtos.Controllers
             try
             {
                 Produto produto = new Produto { NomeProduto = param.NomeProduto, ValorProduto = param.ValorProduto, DescricaoProduto = param.DescricaoProduto, 
-                    EstoqueProduto = param.EstoqueProduto, IdCategoria = param.IdCategoria, FlAtivoProduto = param.FlAtivoProduto };
+                    EstoqueProduto = param.EstoqueProduto, IdCategoria = param.IdCategoria, FlAtivoProduto = param.FlAtivoProduto, ModeloProduto = param.ModeloProduto };
 
                 _db.Produto.Add(produto);
                 await _db.SaveChangesAsync();

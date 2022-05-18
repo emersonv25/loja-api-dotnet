@@ -17,7 +17,7 @@ namespace api_produtos.Services
             {
                 Subject = new ClaimsIdentity(new Claim[]{
                     new Claim(ClaimTypes.Name, usuario.Username.ToString()),
-                    new Claim(ClaimTypes.Role, usuario.Cargo.ToString())
+                    new Claim(ClaimTypes.Role, usuario.Admin.Value ? "admin" : "")
                 }),
                 Expires = DateTime.UtcNow.AddHours(24),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
