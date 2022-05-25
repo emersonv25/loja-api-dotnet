@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using api_produtos.Models;
+using api_loja.Models;
 using Microsoft.AspNetCore.Mvc;
-using api_produtos.Models.Object;
+using api_loja.Models.Object;
 
 
-namespace api_produtos.Services.Interfaces
+namespace api_loja.Services.Interfaces
 {
     public interface IAuthService
     {

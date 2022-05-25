@@ -1,8 +1,8 @@
-# api-produtos
+# api-loja
 Está api tem o intuito de ser um CRUD simples para manipulação de dados referente apenas a produtos e categorias, devido ao curto tempo para desenvolve-la. E no futuro evoluir para um sistema de e-commerce, para o meu repositório pessoal.
 
 ## Demonstração
- + Disponível em: https://api-produtos.azurewebsites.net/swagger/index.html
+ + Disponível em: https://api-loja.azurewebsites.net/swagger/index.html
 
 ## Tecnologias Utilizadas
 
@@ -20,7 +20,7 @@ Está api tem o intuito de ser um CRUD simples para manipulação de dados refer
  + 3 - Execute os seguintes comandos
     + Add-Migration Initial
     + Update-Database
- + 4 - Compile e Execute o projeto api-produtos
+ + 4 - Compile e Execute o projeto api-loja
 
 ## Requisições
 Requisições para a API segue os seguintes padrões:

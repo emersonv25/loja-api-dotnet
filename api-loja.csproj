@@ -2,7 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <RootNamespace>api_produtos</RootNamespace>
+    <RootNamespace>api_loja</RootNamespace>
+    <AssemblyName>api-loja</AssemblyName>
+    <Authors>emersonv25</Authors>
+    <PackageProjectUrl></PackageProjectUrl>
+    <RepositoryUrl>https://github.com/emersonv25/api-loja</RepositoryUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

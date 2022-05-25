@@ -1,4 +1,4 @@
-namespace api_produtos
+namespace api_loja
 {
     public static class Settings 
     {

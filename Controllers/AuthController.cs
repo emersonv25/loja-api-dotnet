@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using api_produtos.Data;
-using api_produtos.Models;
+using api_loja.Data;
+using api_loja.Models;
 using Microsoft.AspNetCore.Authorization;
-using api_produtos.Services;
-using api_produtos.Services.Interfaces;
-using api_produtos.Models.Object;
+using api_loja.Services;
+using api_loja.Services.Interfaces;
+using api_loja.Models.Object;
 
-namespace api_produtos.Controllers
+namespace api_loja.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

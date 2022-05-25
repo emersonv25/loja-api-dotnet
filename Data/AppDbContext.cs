@@ -1,13 +1,13 @@
-﻿using api_produtos.Models;
+﻿using api_loja.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Proxies;
-using api_produtos.Services;
+using api_loja.Services;
 
-namespace api_produtos.Data
+namespace api_loja.Data
 {
     public class AppDbContext : DbContext
     {
@@ -36,6 +36,7 @@ namespace api_produtos.Data
 
             // MODELOPRODUTO
             modelBuilder.Entity<ModeloProduto>().Property(p => p.FlAtivoModelo).HasDefaultValueSql("1").IsRequired();
+            modelBuilder.Entity<ModeloProduto>().Property(p => p.IdProduto).IsRequired();
 
             modelBuilder.Entity<ModeloProduto>().HasData(new ModeloProduto { IdModeloProduto = 3, NomeModelo = "6800 12GB", IdProduto = 2 });
             modelBuilder.Entity<ModeloProduto>().HasData(new ModeloProduto { IdModeloProduto = 4, NomeModelo = "6700 8GB", IdProduto = 2 });

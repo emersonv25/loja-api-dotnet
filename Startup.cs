@@ -1,6 +1,6 @@
-using api_produtos.Data;
-using api_produtos.Services;
-using api_produtos.Services.Interfaces;
+using api_loja.Data;
+using api_loja.Services;
+using api_loja.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -19,7 +19,7 @@ using System.Reflection;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace api_produtos
+namespace api_loja
 {
     public class Startup
     {
@@ -46,7 +46,7 @@ namespace api_produtos
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { 
-                    Title = "api_produtos", 
+                    Title = "api_loja", 
                     Version = "v1", 
                     Description = "API para manipulação de dados referentes a produtos e categorias",
                     Contact = new OpenApiContact()
@@ -69,7 +69,7 @@ namespace api_produtos
             }
 
             app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "api_produtos v1"));
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "api_loja v1"));
 
             app.UseHttpsRedirection();
 

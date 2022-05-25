@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "api_produtos": {
+    "api_loja": {
       "commandName": "Project",
       "dotnetRunMessages": "true",
       "launchBrowser": true,

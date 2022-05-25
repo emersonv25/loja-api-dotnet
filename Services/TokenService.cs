@@ -3,9 +3,9 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
-using api_produtos.Models;
+using api_loja.Models;
 
-namespace api_produtos.Services
+namespace api_loja.Services
 {
     public static class TokenService
     {

@@ -1,6 +1,6 @@
-﻿using api_produtos.Data;
-using api_produtos.Models;
-using api_produtos.Models.Object;
+﻿using api_loja.Data;
+using api_loja.Models;
+using api_loja.Models.Object;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace api_produtos.Controllers
+namespace api_loja.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

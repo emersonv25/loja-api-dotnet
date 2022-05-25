@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace api_produtos.Models.Object
+namespace api_loja.Models.Object
 {
     public class ParamCategoria
     {

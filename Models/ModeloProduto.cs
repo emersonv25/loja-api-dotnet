@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
-namespace api_produtos.Models
+namespace api_loja.Models
 {
     public class ModeloProduto
     {

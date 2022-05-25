@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace api_produtos.Models
+namespace api_loja.Models
 {
     public class Usuario
     {

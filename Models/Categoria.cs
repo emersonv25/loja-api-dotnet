@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace api_produtos.Models
+namespace api_loja.Models
 {
 
     public class Categoria

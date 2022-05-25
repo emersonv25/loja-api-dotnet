@@ -1,12 +1,12 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using api_produtos.Data;
-using api_produtos.Models;
-using api_produtos.Services.Interfaces;
-using api_produtos.Models.Object;
+using api_loja.Data;
+using api_loja.Models;
+using api_loja.Services.Interfaces;
+using api_loja.Models.Object;
 
-namespace api_produtos.Services
+namespace api_loja.Services
 {
     public class AuthService : IAuthService
     {

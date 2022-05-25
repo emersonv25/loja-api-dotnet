@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace api_produtos.Services
+namespace api_loja.Services
 {
     public class Utils
     {
