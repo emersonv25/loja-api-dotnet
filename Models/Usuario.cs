@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace api_produtos.Models
@@ -27,15 +28,11 @@ namespace api_produtos.Models
 
         public string Username { get; set; }
         public string Password { get; set; }
-
         public string NomeCompleto { get; set; }
-
-
         public bool? FlAtivoUsuario { get; set; }
-
         public bool? Admin { get; set; }
-
         public string Email { get; set; }
+        public DateTime DataCadastro { get; set; }
 
 
     }

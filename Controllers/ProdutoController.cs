@@ -48,7 +48,7 @@ namespace api_produtos.Controllers
             try
             {
                 Produto produto = new Produto { NomeProduto = param.NomeProduto, ValorProduto = param.ValorProduto, DescricaoProduto = param.DescricaoProduto, 
-                    EstoqueProduto = param.EstoqueProduto, IdCategoria = param.IdCategoria, FlAtivoProduto = param.FlAtivoProduto, ModeloProduto = param.ModeloProduto };
+                   IdCategoria = param.IdCategoria, FlAtivoProduto = param.FlAtivoProduto, ModeloProduto = param.ModeloProduto };
 
                 _db.Produto.Add(produto);
                 await _db.SaveChangesAsync();
@@ -73,9 +73,9 @@ namespace api_produtos.Controllers
                     return NotFound(new { error = "Produto não encontrado" });
                 }
 
-                if (!String.IsNullOrEmpty(param.NomeProduto))
+                if (!string.IsNullOrEmpty(param.NomeProduto))
                     produto.NomeProduto = param.NomeProduto;
-                if (!String.IsNullOrEmpty(param.DescricaoProduto))
+                if (!string.IsNullOrEmpty(param.DescricaoProduto))
                     produto.DescricaoProduto = param.DescricaoProduto;
                 if (param.ValorProduto != null && param.ValorProduto > 0)
                     produto.ValorProduto = param.ValorProduto.Value;
@@ -91,8 +91,6 @@ namespace api_produtos.Controllers
                 }
                 if (param.FlAtivoProduto != null && param.FlAtivoProduto != produto.FlAtivoProduto)
                     produto.FlAtivoProduto = param.FlAtivoProduto.Value;
-                if (param.EstoqueProduto != null && param.EstoqueProduto.Value > 0)
-                    produto.EstoqueProduto = param.EstoqueProduto.Value;
 
                 await _db.SaveChangesAsync();
                 return Ok(produto);

@@ -17,9 +17,6 @@ namespace api_produtos.Models.Object
         public decimal ValorProduto { get; set; }
         public decimal DescontoProduto { get; set; }
 
-        [Required(ErrorMessage = "A quantidade disponível é obrigatório", AllowEmptyStrings = false)]
-        public int EstoqueProduto { get; set; }
-
         public bool FlAtivoProduto { get; set; }
 
         public int IdCategoria { get; set; }
@@ -34,10 +31,11 @@ namespace api_produtos.Models.Object
         public decimal? ValorProduto { get; set; }
         public decimal? DescontoProduto { get; set; }
 
-        public int? EstoqueProduto { get; set; }
-
         public bool? FlAtivoProduto { get; set; }
 
         public int? IdCategoria { get; set; }
+        public List<ModeloProduto> ModeloProduto { get; set; }
+
     }
+
 }
