@@ -7,14 +7,16 @@ Está api tem o intuito de ser um CRUD simples para manipulação de dados refer
 ## Tecnologias Utilizadas
 
  + ASP.NET Core 5.0
- + Entity Framework
- + Microsoft SQL Server
+ + Entity Framework Core
+ + Microsoft SQL Server ou MySql
 ## Instalação
  + 1 - Abra seu Visual Studio
- + 2 - Modifique a ConnectionString em appsettings.json de acordo com seu banco de dados SQL Server
+ + 2 - Modifique a ConnectionString em appsettings.json de acordo com seu banco de dados MsSQL ou MySQL
 
             "ConnectionStrings": {       
-                "DefaultConnection":  "Data Source=localhost;Initial Catalog=dbProduto;Persist Security Info=True;User ID=sa;Password=admin"  
+                 "DB" : "mysql", // mssql ou mysql
+                 "MsSQLConnection": "Data Source=localhost;Initial Catalog=Loja;Persist Security Info=True;User ID=sa;Password=admin",
+                 "MySqlConnection": "Data Source=localhost;Initial Catalog=Loja;Persist Security Info=True;User ID=root;Password="
             },
 
  + 3 - Execute os seguintes comandos
@@ -22,6 +24,8 @@ Está api tem o intuito de ser um CRUD simples para manipulação de dados refer
     + Update-Database
  + 4 - Compile e Execute o projeto api-loja
 
+
+OBS: Documentação desatualizada,
 ## Requisições
 Requisições para a API segue os seguintes padrões:
 | Tipo | Descrição |
@@ -38,6 +42,10 @@ Requisições para a API segue os seguintes padrões:
 | `200` | Requisição executada com sucesso (success).|
 | `400` | Genérico: qualquer excessão na execução da requisição.|
 | `404` | Registro pesquisado não encontrado (Not found).|
+| `401` | Usuário Não autorizado (Not Authorizated).|
+
+
+## OBS: Daqui para baixo está desatualizado, estou desenvolvendo a api e ainda não decidi se irei manter este tipo de documentação por ser cansativo de escrever. Talvez eu mantenha apenas o proprio Swagger e crie uma documentação via Postman por ser mais pratico
 
 # Endpoints
 

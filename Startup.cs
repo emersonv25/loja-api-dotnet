@@ -24,18 +24,25 @@ namespace api_loja
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            /*
-            string msSqlConnection = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContextPool<AppDbContext>(options => {
-                options.UseSqlServer(msSqlConnection);
-                options.UseLazyLoadingProxies();
-            });
-            */
-            string mySqlConnection = Configuration.GetConnectionString("DefaultConnectionMySql");
-            services.AddDbContext<AppDbContext>(options => {
-                options.UseMySql(mySqlConnection, ServerVersion.AutoDetect(mySqlConnection));
-                options.UseLazyLoadingProxies();
-            });
+
+            
+            string db = Configuration.GetConnectionString("DB");
+            if(db == "mssql")
+            {
+                string msSqlConnection = Configuration.GetConnectionString("MsSqlConnection");
+                services.AddDbContextPool<AppDbContext>(options => {
+                    options.UseSqlServer(msSqlConnection);
+                    options.UseLazyLoadingProxies();
+                });
+            }
+            else if(db == "mysql")
+            {
+                string mySqlConnection = Configuration.GetConnectionString("MySqlConnection");
+                services.AddDbContext<AppDbContext>(options => {
+                    options.UseMySql(mySqlConnection, ServerVersion.AutoDetect(mySqlConnection));
+                    options.UseLazyLoadingProxies();
+                });
+            }
 
             services.AddControllers();
             services.AddTransient<IAuthService, AuthService>();

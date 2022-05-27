@@ -61,10 +61,10 @@ namespace api_loja.Data
             modelBuilder.Entity<Usuario>().Property(u => u.FlAtivoUsuario).HasDefaultValueSql("1").IsRequired();
             modelBuilder.Entity<Usuario>().Property(u => u.Admin).HasDefaultValueSql("0").IsRequired();
             modelBuilder.Entity<Usuario>().Property(u => u.Email).HasMaxLength(256).IsRequired();
-            modelBuilder.Entity<Usuario>().Property(u => u.DataCadastro).HasDefaultValueSql("now()").IsRequired();
+            modelBuilder.Entity<Usuario>().Property(u => u.DataCadastro).IsRequired();
             modelBuilder.Entity<Usuario>()
                 .HasData(
-                    new Usuario { IdUsuario = 1, Username = "admin", NomeCompleto = "Administrador", Password = Utils.sha256_hash("admin"), FlAtivoUsuario = true, Admin = true, Email = "admin@admin.com" }
+                    new Usuario { IdUsuario = 1, Username = "admin", NomeCompleto = "Administrador", Password = Utils.sha256_hash("admin"), FlAtivoUsuario = true, Admin = true, Email = "admin@admin.com"}
                 );
         }
 

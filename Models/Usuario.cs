@@ -32,7 +32,7 @@ namespace api_loja.Models
         public bool? FlAtivoUsuario { get; set; }
         public bool? Admin { get; set; }
         public string Email { get; set; }
-        public DateTime DataCadastro { get; set; }
+        public DateTime DataCadastro { get; set; } = DateTime.Now;
 
 
     }
