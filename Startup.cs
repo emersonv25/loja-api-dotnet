@@ -3,21 +3,12 @@ using api_loja.Services;
 using api_loja.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace api_loja
 {
@@ -33,11 +24,16 @@ namespace api_loja
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-           
+            /*
             string msSqlConnection = Configuration.GetConnectionString("DefaultConnection");
-
             services.AddDbContextPool<AppDbContext>(options => {
                 options.UseSqlServer(msSqlConnection);
+                options.UseLazyLoadingProxies();
+            });
+            */
+            string mySqlConnection = Configuration.GetConnectionString("DefaultConnectionMySql");
+            services.AddDbContext<AppDbContext>(options => {
+                options.UseMySql(mySqlConnection, ServerVersion.AutoDetect(mySqlConnection));
                 options.UseLazyLoadingProxies();
             });
 

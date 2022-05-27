@@ -38,8 +38,8 @@ namespace api_loja.Data
             modelBuilder.Entity<ModeloProduto>().Property(p => p.FlAtivoModelo).HasDefaultValueSql("1").IsRequired();
             modelBuilder.Entity<ModeloProduto>().Property(p => p.IdProduto).IsRequired();
 
-            modelBuilder.Entity<ModeloProduto>().HasData(new ModeloProduto { IdModeloProduto = 3, NomeModelo = "6800 12GB", IdProduto = 2 });
-            modelBuilder.Entity<ModeloProduto>().HasData(new ModeloProduto { IdModeloProduto = 4, NomeModelo = "6700 8GB", IdProduto = 2 });
+            modelBuilder.Entity<ModeloProduto>().HasData(new ModeloProduto { IdModeloProduto = 3, NomeModelo = "6800 12GB", Estoque = 10, IdProduto = 2 });
+            modelBuilder.Entity<ModeloProduto>().HasData(new ModeloProduto { IdModeloProduto = 4, NomeModelo = "6700 8GB", Estoque = 10, IdProduto = 2 });
 
             // CATEGORIA
             modelBuilder.Entity<Categoria>().HasKey(p => p.IdCategoria);
@@ -57,11 +57,11 @@ namespace api_loja.Data
             modelBuilder.Entity<Usuario>().Property(u => u.Username).HasMaxLength(64).IsRequired();
             modelBuilder.Entity<Usuario>().HasIndex(u => u.Username).IsUnique(true);
             modelBuilder.Entity<Usuario>().HasIndex(u => u.Email).IsUnique(true);
-            modelBuilder.Entity<Usuario>().Property(u => u.Password).HasMaxLength(128).IsRequired();
+            modelBuilder.Entity<Usuario>().Property(u => u.Password).IsRequired();
             modelBuilder.Entity<Usuario>().Property(u => u.FlAtivoUsuario).HasDefaultValueSql("1").IsRequired();
             modelBuilder.Entity<Usuario>().Property(u => u.Admin).HasDefaultValueSql("0").IsRequired();
             modelBuilder.Entity<Usuario>().Property(u => u.Email).HasMaxLength(256).IsRequired();
-            modelBuilder.Entity<Usuario>().Property(u => u.DataCadastro).HasDefaultValueSql("getDate()").IsRequired();
+            modelBuilder.Entity<Usuario>().Property(u => u.DataCadastro).HasDefaultValueSql("now()").IsRequired();
             modelBuilder.Entity<Usuario>()
                 .HasData(
                     new Usuario { IdUsuario = 1, Username = "admin", NomeCompleto = "Administrador", Password = Utils.sha256_hash("admin"), FlAtivoUsuario = true, Admin = true, Email = "admin@admin.com" }
