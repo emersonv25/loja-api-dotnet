@@ -34,7 +34,6 @@ namespace api_loja.Models.Object
         public bool? FlAtivoProduto { get; set; }
 
         public int? IdCategoria { get; set; }
-        public List<ModeloProduto> ModeloProduto { get; set; }
 
     }
 

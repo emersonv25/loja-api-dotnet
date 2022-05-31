@@ -1,12 +1,9 @@
-﻿using api_loja.Data;
-using api_loja.Models;
+﻿using api_loja.Models;
 using api_loja.Models.Object;
-using Microsoft.AspNetCore.Http;
+using api_loja.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -17,91 +14,105 @@ namespace api_loja.Controllers
     [ApiController]
     public class CategoriaController : ControllerBase
     {
-        private readonly AppDbContext _db;
-
-        public CategoriaController(AppDbContext context)
+        private readonly ICategoriaService _categoriaService;
+        public CategoriaController(ICategoriaService categoriaService)
         {
-            _db = context;
+            _categoriaService = categoriaService;
         }
 
-        // GET api/<CategoriaController>/
+
         [HttpGet]
-        public ActionResult<IEnumerable<Categoria>> GetAll()
+        public ActionResult<Categoria> GetAll()
         {
-            return _db.Categoria.Where(x => x.IdCategoriaPai == null).Include(x => x.SubCategorias).ToList();
+
+            try
+            {
+                ICollection<Categoria> categorias = _categoriaService.GetAll();
+                return Ok(categorias);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Não foi possível realizar a consulta: " + ex.Message);
+            }
+
         }
 
-        // GET api/<CategoriaController>/5
+
         [HttpGet("{id:int}")]
-        public ActionResult<IEnumerable<Categoria>> GetById(int id)
+        public ActionResult<Categoria> GetById(int id)
         {
-            return _db.Categoria.Where(x => x.IdCategoria == id).Include(x => x.SubCategorias).ToList();
+            try
+            {
+                ICollection<Categoria> categoria = _categoriaService.GetById(id);
+                if (categoria.Count == 0)
+                {
+                    return NotFound("Nenhum resultado encontrado");
+                }
+                return Ok(categoria);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Não foi possível realizar a consulta: " + ex.Message);
+            }
+
         }
-        // GET api/<CategoriaController>/Hardware
+
         [HttpGet("{nome}")]
-        public ActionResult<IEnumerable<Categoria>> GetByName(string nome)
+        public ActionResult<Categoria> GetByName(string nome)
         {
-            return _db.Categoria.Where(i => i.NomeCategoria.Contains(nome)).Include(x => x.SubCategorias).ToList();
+            try
+            {
+                IEnumerable<Categoria> categoria = _categoriaService.GetByName(nome);
+                return Ok(categoria);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Não foi possível realizar a consulta: " + ex.Message);
+            }
+
         }
-        // POST api/<CategoriaController>
+
         [HttpPost]
-        public async Task<ActionResult<dynamic>> Post([FromBody] ParamCategoria param)
+        public async Task<ActionResult<Categoria>> Post([FromBody] ParamCategoria param)
         {
             try
             {
-                Categoria categoria = new Categoria { NomeCategoria = param.NomeCategoria, IdCategoriaPai = param.IdCategoriaPai != 0 ? param.IdCategoriaPai : null };
-                _db.Categoria.Add(categoria);
-                await _db.SaveChangesAsync();
-                return Ok(categoria);
+                Categoria categoria = await _categoriaService.Post(param);
+                return Ok(new { message = "Categoria cadastrado com sucesso !" });
             }
             catch(Exception ex)
             {
-                return BadRequest(new { error = "Não foi possivel cadastrar a categoria: " + ex.Message });
+                return BadRequest("Não foi possivel cadastrar a categoria: " + ex.Message );
             }
 
         }
 
-        // PUT api/<CategoriaController>/5
+
         [HttpPut("{id}")]
-        public async Task<ActionResult<dynamic>> Put(int id, [FromBody] ParamCategoria param)
+        public async Task<ActionResult> Put(int id, [FromBody] ParamCategoria param)
         {
             try
             {
-                Categoria categoria = await _db.Categoria.FindAsync(id);
-                if (categoria == null)
-                {
-                    return BadRequest(new { error = "Categoria não encontrada" });
-                }
-                categoria.NomeCategoria = param.NomeCategoria;
-                if(param.IdCategoriaPai != 0)
-                    categoria.IdCategoriaPai = param.IdCategoriaPai;
-                await _db.SaveChangesAsync();
-                return Ok(categoria);
+                await _categoriaService.Put(id, param);
+                return Ok("Categoria editada com sucesso !");
             }
             catch(Exception ex)
             {
-                return BadRequest(new { error = "Não foi possivel editar a categoria: " + ex.Message });
+                return BadRequest("Não foi possivel editar a categoria: " + ex.Message);
             }
         }
 
-        // DELETE api/<CategoriaController>/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<dynamic>> Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             try
             {
-                Categoria categoria = await _db.Categoria.FindAsync(id);
-                if(categoria == null)
-                {
-                    return NotFound(new { error = "Categoria não encontrada" });
-                }
-                _db.Categoria.Remove(categoria);
-                await _db.SaveChangesAsync();
-                return Ok();
+                await _categoriaService.Delete(id);
+                return Ok("Categoria deletada com sucesso");
             }
             catch(Exception ex)
             {
-                return BadRequest(new { error = "Não foi possivel deletar a categoria: " + ex.Message });
+                return BadRequest("Não foi possivel deletar a categoria: " + ex.Message);
             }
 
         }

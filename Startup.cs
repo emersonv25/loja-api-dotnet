@@ -25,13 +25,6 @@ namespace api_loja
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<FormOptions>(options =>
-            {
-                options.ValueLengthLimit = int.MaxValue;
-                options.MultipartBodyLengthLimit = int.MaxValue; // if don't set 
-                                                                 //default value is: 128 MB
-                options.MultipartHeadersLengthLimit = int.MaxValue;
-            });
 
             string db = Configuration.GetConnectionString("DB");
             if(db == "mssql")
@@ -52,6 +45,8 @@ namespace api_loja
             }
             services.AddControllers();
             services.AddTransient<IAuthService, AuthService>();
+            services.AddTransient<ICategoriaService, CategoriaService>();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { 
