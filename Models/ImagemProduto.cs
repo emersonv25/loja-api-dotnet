@@ -4,19 +4,21 @@ using System.Text.Json.Serialization;
 
 namespace api_loja.Models
 {
-    public class ModeloProduto
+    public class ImagemProduto
     {
         [Key]
-        public int IdModeloProduto{ get; set; }
-        public string NomeModelo { get; set; }
-        public bool? FlAtivoModelo { get; set; }
-        public int Estoque { get; set; }
+        public int IdImagemProduto { get; set; }
+        public string Path { get; set; }
+
         public int IdProduto { get; set; }
         [ForeignKey("IdProduto")]
         [JsonIgnore]
         public virtual Produto Produto { get; set; }
+
+        public int? IdModeloProduto { get; set; }
+        [ForeignKey("IdModeloProduto")]
         [JsonIgnore]
-        public virtual ImagemProduto ImagemProduto { get; set; }
+        public virtual ModeloProduto ModeloProduto {get; set;}
 
     }
 }

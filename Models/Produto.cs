@@ -12,12 +12,14 @@ namespace api_loja.Models
         public string DescricaoProduto { get; set; }
         public decimal ValorProduto { get; set; }
         public decimal DescontoProduto { get; set; }
-        public int EstoqueProduto { get; set; }
         public bool? FlAtivoProduto { get; set; }
+        public virtual ICollection<ImagemProduto> ImagemProduto { get; set; }
+
         public virtual ICollection<ModeloProduto> ModeloProduto { get; set; }
         public int IdCategoria { get; set; }
         [ForeignKey("IdCategoria")]
         public virtual Categoria Categoria { get; set; }
+
 
     }
 }

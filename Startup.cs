@@ -3,6 +3,7 @@ using api_loja.Services;
 using api_loja.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,8 +25,14 @@ namespace api_loja
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<FormOptions>(options =>
+            {
+                options.ValueLengthLimit = int.MaxValue;
+                options.MultipartBodyLengthLimit = int.MaxValue; // if don't set 
+                                                                 //default value is: 128 MB
+                options.MultipartHeadersLengthLimit = int.MaxValue;
+            });
 
-            
             string db = Configuration.GetConnectionString("DB");
             if(db == "mssql")
             {
@@ -43,7 +50,6 @@ namespace api_loja
                     options.UseLazyLoadingProxies();
                 });
             }
-
             services.AddControllers();
             services.AddTransient<IAuthService, AuthService>();
             services.AddSwaggerGen(c =>
