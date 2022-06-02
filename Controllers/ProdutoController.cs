@@ -1,6 +1,7 @@
 ﻿using api_loja.Data;
 using api_loja.Models;
 using api_loja.Models.Object;
+using api_loja.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -14,130 +15,101 @@ namespace api_loja.Controllers
     [ApiController]
     public class ProdutoController : ControllerBase
     {
-        private readonly AppDbContext _db;
-
-        public ProdutoController(AppDbContext context)
+        private readonly IProdutoService _produtoService;
+        public ProdutoController(IProdutoService produtoService)
         {
-            _db = context;
+            _produtoService = produtoService;
         }
 
         // GET: api/<ProdutoController>
         [HttpGet]
         public ActionResult<ICollection<ViewProduto>> GetAll()
         {
-            ICollection<Produto> produtos = _db.Produto.Include(c => c.Categoria).Include(m => m.ModeloProduto).ToList();
-            List<ViewProduto> view = new List<ViewProduto>();
-            foreach(Produto p in produtos)
+            try
             {
-                ViewProduto v = new ViewProduto
-                {
-                    IdProduto = p.IdProduto,
-                    NomeProduto = p.NomeProduto,
-                    DescricaoProduto = p.DescricaoProduto,
-                    ValorProduto = p.ValorProduto,
-                    DescontoProduto = p.DescontoProduto,
-                    FlAtivoProduto = p.FlAtivoProduto,
-                    ModeloProduto = p.ModeloProduto,
-                    IdCategoria = p.IdCategoria,
-                    Categoria = p.Categoria,
-                    Imagens = new List<string> { "url", "url" }
-                };
-                view.Add(v);
+                ICollection<ViewProduto> view = _produtoService.GetAll();
+
+                return Ok(view);
             }
-            return Ok(view);
+            catch(Exception ex)
+            {
+                return BadRequest("Não foi possível realizar a consulta: " + ex.Message);
+            }
         }
 
         // GET api/<ProdutoController>/5
         [HttpGet("{id:int}")]
-        public ActionResult<ICollection<Produto>> GetById(int id)
-        {
-            return _db.Produto.Include(c => c.Categoria).Where(i => i.IdProduto == id).ToList();
-        }
-        // GET api/<CategoriaController>/Placa
-        [HttpGet("{nome}")]
-        public ActionResult<ICollection<Produto>> GetByName(string nome)
-        {
-            return _db.Produto.Include(c => c.Categoria).Include(m => m.ModeloProduto).Where(i => i.NomeProduto.Contains(nome) || i.Categoria.NomeCategoria.Contains(nome) || i.DescricaoProduto.Contains(nome)).ToList();
-        }
-
-        // POST api/<ProdutoController>
-        [HttpPost]
-        public async Task<ActionResult<dynamic>> Post([FromBody] ParamProduto param)
+        public ActionResult<ViewProduto> GetById(int id)
         {
             try
             {
-                Produto produto = new Produto { NomeProduto = param.NomeProduto, ValorProduto = param.ValorProduto, DescricaoProduto = param.DescricaoProduto, 
-                   IdCategoria = param.IdCategoria, FlAtivoProduto = param.FlAtivoProduto, ModeloProduto = param.ModeloProduto };
-
-                _db.Produto.Add(produto);
-                await _db.SaveChangesAsync();
+                ViewProduto produto = _produtoService.GetById(id);
+                if (produto == null)
+                    return NotFound("Produto não encontrado");
                 return Ok(produto);
             }
             catch(Exception ex)
             {
-                return BadRequest(new { error = "Não foi possivel cadastrar o produto: " + ex.Message });
+                return BadRequest("Não foi possível realizar a consulta: " + ex.Message);
+            }
+        }
+        // GET api/<CategoriaController>/Placa
+        [HttpGet("{nome}")]
+        public ActionResult<ICollection<ViewProduto>> GetByName(string nome)
+        {
+            try
+            {
+                return Ok(_produtoService.GetByName(nome));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Não foi possível realizar a consulta: " + ex.Message);
+            }
+        }
+
+        // POST api/<ProdutoController>
+        [HttpPost]
+        public async Task<ActionResult> Post([FromBody] ParamProduto param)
+        {
+            try
+            {
+                await _produtoService.Post(param);
+                return Ok("Produto cadastrado com sucesso !");
+            }
+            catch(Exception ex)
+            {
+                return BadRequest("Não foi possivel cadastrar o produto: " + ex.Message);
             }
 
         }
 
         // PUT api/<ProdutoController>/5
         [HttpPut("{id}")]
-        public async Task<ActionResult<dynamic>> Put(int id, [FromBody] ParamEditarProduto param)
+        public async Task<ActionResult> Put(int id, [FromBody] ParamEditarProduto param)
         {
             try
             {
-                Produto produto = await _db.Produto.FindAsync(id);
-                if (produto == null)
-                {
-                    return NotFound(new { error = "Produto não encontrado" });
-                }
-
-                if (!string.IsNullOrEmpty(param.NomeProduto))
-                    produto.NomeProduto = param.NomeProduto;
-                if (!string.IsNullOrEmpty(param.DescricaoProduto))
-                    produto.DescricaoProduto = param.DescricaoProduto;
-                if (param.ValorProduto != null && param.ValorProduto > 0)
-                    produto.ValorProduto = param.ValorProduto.Value;
-                if (param.DescontoProduto != null && param.DescontoProduto > 0)
-                    produto.DescontoProduto = param.DescontoProduto.Value;
-                if (param.IdCategoria != null && param.IdCategoria > 0)
-                {
-                    if (_db.Categoria.FirstOrDefault(c => c.IdCategoria == param.IdCategoria) == null)
-                    {
-                        return NotFound(new { error = "Categoria não encontrada" });
-                    }
-                    produto.IdCategoria = param.IdCategoria.Value;
-                }
-                if (param.FlAtivoProduto != null && param.FlAtivoProduto != produto.FlAtivoProduto)
-                    produto.FlAtivoProduto = param.FlAtivoProduto.Value;
-
-                await _db.SaveChangesAsync();
-                return Ok(produto);
+                await _produtoService.Put(id, param);
+                return Ok("Produto editado com sucesso");
             }
             catch (Exception ex)
             {
-                return BadRequest(new { error = "Não foi possivel cadastrar o produto: " + ex.Message });
+                return BadRequest( "Não foi possivel cadastrar o produto: " + ex.Message);
             }
         }
 
         // DELETE api/<ProdutoController>/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<dynamic>> Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             try
             {
-                Produto produto = await _db.Produto.FindAsync(id);
-                if (produto == null)
-                {
-                    return NotFound(new { error = "Produto não encontrado" });
-                }
-                _db.Produto.Remove(produto);
-                await _db.SaveChangesAsync();
-                return Ok(new { message = "Deletado com sucesso !" });
+                await _produtoService.Delete(id);
+                return Ok("Deletado com sucesso !");
             }
             catch (Exception ex)
             {
-                return BadRequest(new { error = "Não foi possivel deletar o produto: " + ex.Message });
+                return BadRequest("Não foi possivel deletar o produto: " + ex.Message);
             }
 
         }

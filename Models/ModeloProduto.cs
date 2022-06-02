@@ -15,8 +15,6 @@ namespace api_loja.Models
         [ForeignKey("IdProduto")]
         [JsonIgnore]
         public virtual Produto Produto { get; set; }
-        [JsonIgnore]
-        public virtual ImagemProduto ImagemProduto { get; set; }
 
     }
 }

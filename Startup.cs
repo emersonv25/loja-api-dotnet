@@ -46,6 +46,7 @@ namespace api_loja
             services.AddControllers();
             services.AddTransient<IAuthService, AuthService>();
             services.AddTransient<ICategoriaService, CategoriaService>();
+            services.AddTransient<IProdutoService, ProdutoService>();
 
             services.AddSwaggerGen(c =>
             {
