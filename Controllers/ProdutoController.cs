@@ -23,20 +23,39 @@ namespace api_loja.Controllers
 
         // GET: api/<ProdutoController>
         [HttpGet]
-        public ActionResult<IEnumerable<Produto>> GetAll()
+        public ActionResult<ICollection<ViewProduto>> GetAll()
         {
-            return _db.Produto.Include(c => c.Categoria).Include(m => m.ModeloProduto).ToList();
+            ICollection<Produto> produtos = _db.Produto.Include(c => c.Categoria).Include(m => m.ModeloProduto).ToList();
+            List<ViewProduto> view = new List<ViewProduto>();
+            foreach(Produto p in produtos)
+            {
+                ViewProduto v = new ViewProduto
+                {
+                    IdProduto = p.IdProduto,
+                    NomeProduto = p.NomeProduto,
+                    DescricaoProduto = p.DescricaoProduto,
+                    ValorProduto = p.ValorProduto,
+                    DescontoProduto = p.DescontoProduto,
+                    FlAtivoProduto = p.FlAtivoProduto,
+                    ModeloProduto = p.ModeloProduto,
+                    IdCategoria = p.IdCategoria,
+                    Categoria = p.Categoria,
+                    Imagens = new List<string> { "url", "url" }
+                };
+                view.Add(v);
+            }
+            return Ok(view);
         }
 
         // GET api/<ProdutoController>/5
         [HttpGet("{id:int}")]
-        public ActionResult<IEnumerable<Produto>> GetById(int id)
+        public ActionResult<ICollection<Produto>> GetById(int id)
         {
             return _db.Produto.Include(c => c.Categoria).Where(i => i.IdProduto == id).ToList();
         }
         // GET api/<CategoriaController>/Placa
         [HttpGet("{nome}")]
-        public ActionResult<IEnumerable<Produto>> GetByName(string nome)
+        public ActionResult<ICollection<Produto>> GetByName(string nome)
         {
             return _db.Produto.Include(c => c.Categoria).Include(m => m.ModeloProduto).Where(i => i.NomeProduto.Contains(nome) || i.Categoria.NomeCategoria.Contains(nome) || i.DescricaoProduto.Contains(nome)).ToList();
         }
