@@ -87,6 +87,16 @@ namespace api_loja.Services
         }
         public async Task<bool> Post(ParamProduto param)
         {
+            List<ModeloProduto> modelos = new List<ModeloProduto>();
+            foreach (ParamModeloProduto m in param.ModeloProduto)
+            {
+                ModeloProduto modelo = new ModeloProduto
+                {
+                    NomeModelo = m.NomeModelo,
+                    Estoque = m.Estoque
+                };
+                modelos.Add(modelo);
+            }
 
             Produto produto = new Produto
             {
@@ -95,8 +105,9 @@ namespace api_loja.Services
                 DescricaoProduto = param.DescricaoProduto,
                 IdCategoria = param.IdCategoria,
                 FlAtivoProduto = param.FlAtivoProduto,
-                ModeloProduto = param.ModeloProduto
+                ModeloProduto = modelos
             };
+
 
             _db.Produto.Add(produto);
             await _db.SaveChangesAsync();

@@ -30,7 +30,7 @@ namespace api_loja.Controllers
 
         // POST api/<ModeloProdutoController>
         [HttpPost]
-        public async Task<ActionResult<dynamic>> Post([FromBody] ParamModeloProduto param)
+        public async Task<ActionResult<dynamic>> Post([FromBody] ParamModelo param)
         {
             try
             {

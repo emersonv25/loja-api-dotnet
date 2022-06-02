@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace api_loja.Models.Object
 {
-    public class ParamModeloProduto
+    public class ParamModelo
     {
         [Required(ErrorMessage = "O nome do modelo é obrigatório", AllowEmptyStrings = false)]
         public string NomeModelo { get; set; }
@@ -23,5 +23,12 @@ namespace api_loja.Models.Object
         public bool? FlAtivoModelo { get; set; }
         public int? Estoque { get; set; }
 
+    }
+    public class ParamModeloProduto
+    {
+        [Required(ErrorMessage = "O nome do modelo é obrigatório", AllowEmptyStrings = false)]
+        public string NomeModelo { get; set; }
+        [Required(ErrorMessage = "A quantidade em estoque é obrigatorio", AllowEmptyStrings = false)]
+        public int Estoque { get; set; }
     }
 }
