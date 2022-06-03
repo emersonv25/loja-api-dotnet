@@ -22,7 +22,7 @@ namespace api_loja.Controllers
 
 
         [HttpGet]
-        public ActionResult<Categoria> GetAll()
+        public ActionResult<ICollection<Categoria>> GetAll()
         {
 
             try
@@ -43,12 +43,12 @@ namespace api_loja.Controllers
         {
             try
             {
-                ICollection<Categoria> categoria = _categoriaService.GetById(id);
-                if (categoria.Count == 0)
+                Categoria categoria = _categoriaService.GetById(id);
+                if (categoria == null)
                 {
                     return NotFound("Nenhum resultado encontrado");
                 }
-                return Ok(categoria);
+                return Ok( new { categoria });
             }
             catch (Exception ex)
             {
@@ -58,7 +58,7 @@ namespace api_loja.Controllers
         }
 
         [HttpGet("{nome}")]
-        public ActionResult<Categoria> GetByName(string nome)
+        public ActionResult<ICollection<Categoria>> GetByName(string nome)
         {
             try
             {
@@ -73,7 +73,7 @@ namespace api_loja.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Categoria>> Post([FromBody] ParamCategoria param)
+        public async Task<ActionResult> Post([FromBody] ParamCategoria param)
         {
             try
             {

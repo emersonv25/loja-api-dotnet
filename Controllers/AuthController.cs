@@ -78,7 +78,7 @@ namespace api_loja.Controllers
                 return BadRequest(new {error = "Não foi possivel cadastrar o usuário"});
             }
 
-            return (new {message = "Usuário cadastrado com sucesso !"});
+            return ( "Usuário cadastrado com sucesso !");
 
         }
         [HttpPut]

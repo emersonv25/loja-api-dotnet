@@ -23,7 +23,7 @@ namespace api_loja.Controllers
 
         // GET: api/<ProdutoController>
         [HttpGet]
-        public ActionResult<Retorno> GetAll()
+        public ActionResult<ICollection<Produto>> GetAll()
         {
             try
             {
@@ -39,7 +39,7 @@ namespace api_loja.Controllers
 
         // GET api/<ProdutoController>/5
         [HttpGet("{id:int}")]
-        public ActionResult<ViewProduto> GetById(int id)
+        public ActionResult<Produto> GetById(int id)
         {
             try
             {
@@ -55,7 +55,7 @@ namespace api_loja.Controllers
         }
         // GET api/<CategoriaController>/Placa
         [HttpGet("{nome}")]
-        public ActionResult<Retorno> GetByName(string nome)
+        public ActionResult<ICollection<Produto>> GetByName(string nome)
         {
             try
             {

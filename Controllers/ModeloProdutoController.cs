@@ -23,14 +23,17 @@ namespace api_loja.Controllers
 
         // GET api/<ModeloProdutoController>/5
         [HttpGet("{id:int}")]
-        public ActionResult<IEnumerable<ModeloProduto>> GetById(int id)
+        public ActionResult<ModeloProduto> GetById(int id)
         {
-            return _db.ModeloProduto.Where(i => i.IdModeloProduto == id).ToList();
+            ModeloProduto modelo = _db.ModeloProduto.Find(id);
+            if (modelo == null)
+                return NotFound("Modelo não encontrado");
+            return Ok(new { modelo });
         }
 
         // POST api/<ModeloProdutoController>
         [HttpPost]
-        public async Task<ActionResult<dynamic>> Post([FromBody] ParamModelo param)
+        public async Task<ActionResult<ModeloProduto>> Post([FromBody] ParamModelo param)
         {
             try
             {
@@ -49,7 +52,7 @@ namespace api_loja.Controllers
 
         // PUT api/<ModeloProdutoController>/5
         [HttpPut("{id}")]
-        public async Task<ActionResult<dynamic>> Put(int id, [FromBody] ParamEditarModeloProduto param)
+        public async Task<ActionResult> Put(int id, [FromBody] ParamEditarModeloProduto param)
         {
             try
             {
@@ -81,7 +84,7 @@ namespace api_loja.Controllers
 
         // DELETE api/<ModeloProdutoController>/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<dynamic>> Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             try
             {

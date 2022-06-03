@@ -23,9 +23,9 @@ namespace api_loja.Services
         {
             return  _db.Categoria.Where(x => x.IdCategoriaPai == null).Include(x => x.SubCategorias).ToList();
         }
-        public ICollection<Categoria> GetById(int id)
+        public Categoria GetById(int id)
         {
-            return _db.Categoria.Where(x => x.IdCategoria == id).Include(x => x.SubCategorias).ToList();
+            return _db.Categoria.Find(id);
         }
         public ICollection<Categoria> GetByName(string nome)
         {

@@ -10,7 +10,7 @@ namespace api_loja.Services.Interfaces
     public interface ICategoriaService
     {
         ICollection<Categoria> GetAll();
-        ICollection<Categoria> GetById(int id);
+        Categoria GetById(int id);
         ICollection<Categoria> GetByName(string nome);
         Task<Categoria> Post(ParamCategoria param);
         Task<bool> Put(int id, ParamCategoria param);
