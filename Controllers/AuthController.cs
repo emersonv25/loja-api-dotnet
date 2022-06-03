@@ -28,9 +28,9 @@ namespace api_loja.Controllers
         [HttpPost]
         [Route("login")]
         [AllowAnonymous]
-        public async Task<ActionResult<dynamic>> Autenticar([FromBody]ParamLogin user)
+        public ActionResult<dynamic> Autenticar([FromBody]ParamLogin user)
         {
-            Usuario usuario = await _authService.Login(user.Username, user.Password);
+            Usuario usuario = _authService.Login(user.Username, user.Password);
             if (usuario == null){
                 return BadRequest("Usuário ou senha inválidos");
             }
@@ -62,10 +62,10 @@ namespace api_loja.Controllers
                 if(user.Nome == ""){
                     return BadRequest("O Nome não pode ser nulo");
                 }
-                if(await _authService.GetUsuario(user.Username) != null){
+                if(_authService.GetUsuario(user.Username) != null){
                     return BadRequest("Nome de usuário já cadastrado");
                 }
-                if(await _authService.GetUsuarioByEmail(user.Email) != null){
+                if(_authService.GetUsuarioByEmail(user.Email) != null){
                     return BadRequest("E-mail já cadastrado");
                 }
             }
