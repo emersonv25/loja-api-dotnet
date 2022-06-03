@@ -16,13 +16,13 @@ namespace api_loja.Services
             _context = context;
 
         }
-        public async Task<Usuario> Login(string username, string password)
+        public Usuario Login(string username, string password)
         {
             Usuario usuario = new Usuario();
             var senha = Utils.sha256_hash(password);
             try
             {
-                usuario = _context.Usuarios.FirstOrDefault(u => u.Username == username && u.Password == senha);
+                usuario = _context.Usuarios.SingleOrDefault(u => u.Username == username && u.Password == senha);
             }
             catch (Exception ex)
             {
@@ -50,17 +50,17 @@ namespace api_loja.Services
             }
             return user;
         }
-        public async Task<Usuario> GetUsuario(string username)
+        public Usuario GetUsuario(string username)
         {
             Usuario usuario = new Usuario();
-            usuario = _context.Usuarios.FirstOrDefault(u => u.Username == username);
+            usuario = _context.Usuarios.SingleOrDefault(u => u.Username == username);
 
             return usuario;
         }
-        public async Task<Usuario> GetUsuarioByEmail(string email)
+        public Usuario GetUsuarioByEmail(string email)
         {
             Usuario usuario = new Usuario();
-            usuario = _context.Usuarios.FirstOrDefault(u => u.Email == email);
+            usuario = _context.Usuarios.SingleOrDefault(u => u.Email == email);
 
             return usuario;
         }

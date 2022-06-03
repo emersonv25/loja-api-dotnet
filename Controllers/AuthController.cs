@@ -32,11 +32,11 @@ namespace api_loja.Controllers
         {
             Usuario usuario = await _authService.Login(user.Username, user.Password);
             if (usuario == null){
-                return BadRequest(new {error = "Usuário ou senha inválidos"});
+                return BadRequest("Usuário ou senha inválidos");
             }
 
             if(usuario.FlAtivoUsuario == true){
-                return BadRequest(new {error = "Usuário Inativo !"});
+                return BadRequest("Usuário Inativo !");
             }
 
             var token = TokenService.GenerateToken(usuario);
@@ -54,23 +54,23 @@ namespace api_loja.Controllers
         {
             if(user.Username != null && user.Password != null && user.Nome != null){
                 if(user.Password.Length < 4){
-                    return BadRequest(new {error = "A Senha precisa conter mais de 4 caracteres"});
+                    return BadRequest("A Senha precisa conter mais de 4 caracteres");
                 }
                 if(user.Username.Length < 4){
-                    return BadRequest(new {error = "O nome de usuário precisa conter mais de 4 caracteres"});
+                    return BadRequest("O nome de usuário precisa conter mais de 4 caracteres");
                 }
                 if(user.Nome == ""){
-                    return BadRequest(new {error = "O Nome não pode ser nulo"});
+                    return BadRequest("O Nome não pode ser nulo");
                 }
                 if(await _authService.GetUsuario(user.Username) != null){
-                    return BadRequest(new {error = "Nome de usuário já cadastrado"});
+                    return BadRequest("Nome de usuário já cadastrado");
                 }
                 if(await _authService.GetUsuarioByEmail(user.Email) != null){
-                    return BadRequest(new {error = "E-mail já cadastrado"});
+                    return BadRequest("E-mail já cadastrado");
                 }
             }
             else{
-                return BadRequest(new {error = "Dados para o cadastro inválidos !"});
+                return BadRequest("Dados para o cadastro inválidos !");
             }
 
             Usuario usuario = await _authService.Cadastrar(user);
@@ -90,10 +90,10 @@ namespace api_loja.Controllers
             Usuario usuario = new Usuario();
             usuario = await _authService.PutUsuarioAdm(id, usuarioEditado);
             if(usuario == null){
-                return BadRequest(new {error = "Falha ao editar usuário"});
+                return BadRequest("Falha ao editar usuário");
             }
 
-            return (new {message = "Usuário editado com sucesso !"});
+            return ("Usuário editado com sucesso !");
         }
         [HttpPut]
         [Route("editar")]
@@ -104,10 +104,10 @@ namespace api_loja.Controllers
             Usuario usuario = new Usuario();
             usuario = await _authService.PutUsuario(id, usuarioEditado);
             if(usuario == null){
-                return BadRequest(new {error = "Falha ao editar usuário"});
+                return BadRequest("Falha ao editar usuário");
             }
 
-            return (new {message = "Usuário editado com sucesso !"});
+            return ("Usuário editado com sucesso !");
         }
         [HttpDelete]
         [Route("admin/deletar")]
@@ -117,10 +117,10 @@ namespace api_loja.Controllers
 
             bool usuario = await _authService.DeleteUsuario(id);
             if(usuario == false){
-                return BadRequest(new {error = "Falha ao deletar usuário"});
+                return BadRequest("Falha ao deletar usuário");
             }
 
-            return (new {message = "Usuário deletado com sucesso !"});
+            return ("Usuário deletado com sucesso !");
         }
 
 

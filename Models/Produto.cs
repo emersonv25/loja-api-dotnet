@@ -20,6 +20,5 @@ namespace api_loja.Models
         [ForeignKey("IdCategoria")]
         public virtual Categoria Categoria { get; set; }
 
-
     }
 }

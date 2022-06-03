@@ -23,13 +23,13 @@ namespace api_loja.Controllers
 
         // GET: api/<ProdutoController>
         [HttpGet]
-        public ActionResult<ICollection<ViewProduto>> GetAll()
+        public ActionResult<Retorno> GetAll()
         {
             try
             {
-                ICollection<ViewProduto> view = _produtoService.GetAll();
+                Retorno retorno = _produtoService.GetAll();
 
-                return Ok(view);
+                return Ok(retorno);
             }
             catch(Exception ex)
             {
@@ -55,7 +55,7 @@ namespace api_loja.Controllers
         }
         // GET api/<CategoriaController>/Placa
         [HttpGet("{nome}")]
-        public ActionResult<ICollection<ViewProduto>> GetByName(string nome)
+        public ActionResult<Retorno> GetByName(string nome)
         {
             try
             {

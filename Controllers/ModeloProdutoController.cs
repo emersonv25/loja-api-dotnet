@@ -42,7 +42,7 @@ namespace api_loja.Controllers
             }
             catch(Exception ex)
             {
-                return BadRequest(new { error = "Não foi possivel cadastrar o Modelo: " + ex.Message });
+                return BadRequest("Não foi possivel cadastrar o Modelo: " + ex.Message);
             }
 
         }
@@ -75,7 +75,7 @@ namespace api_loja.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { error = "Não foi possivel cadastrar o produto: " + ex.Message });
+                return BadRequest( "Não foi possivel cadastrar o produto: " + ex.Message);
             }
         }
 
@@ -92,11 +92,11 @@ namespace api_loja.Controllers
                 }
                 _db.ModeloProduto.Remove(modelo);
                 await _db.SaveChangesAsync();
-                return Ok(new { message = "Deletado com sucesso !" });
+                return Ok("Deletado com sucesso !");
             }
             catch (Exception ex)
             {
-                return BadRequest(new { error = "Não foi possivel deletar o modelo: " + ex.Message });
+                return BadRequest("Não foi possivel deletar o modelo: " + ex.Message);
             }
 
         }

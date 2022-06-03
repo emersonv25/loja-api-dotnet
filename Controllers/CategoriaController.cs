@@ -62,7 +62,7 @@ namespace api_loja.Controllers
         {
             try
             {
-                IEnumerable<Categoria> categoria = _categoriaService.GetByName(nome);
+                ICollection<Categoria> categoria = _categoriaService.GetByName(nome);
                 return Ok(categoria);
             }
             catch (Exception ex)

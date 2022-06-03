@@ -19,13 +19,13 @@ namespace api_loja.Services
             _db = context;
 
         }
-        public ICollection<ViewProduto> GetAll()
+        public Retorno GetAll()
         {
             ICollection<Produto> produtos = _db.Produto.Include(c => c.Categoria).Include(m => m.ModeloProduto).ToList();
-            List<ViewProduto> viewProduto = new List<ViewProduto>();
+            List<ViewProduto> retornoProduto = new List<ViewProduto>();
             foreach (Produto p in produtos)
             {
-                ViewProduto v = new ViewProduto
+                ViewProduto v = new ViewProduto 
                 {
                     IdProduto = p.IdProduto,
                     NomeProduto = p.NomeProduto,
@@ -38,13 +38,27 @@ namespace api_loja.Services
                     Categoria = p.Categoria,
                     Imagens = new List<string> { "url", "url" }
                 };
-                viewProduto.Add(v);
+                retornoProduto.Add(v);
             }
-            return viewProduto;
+
+            #region Retorno
+            Retorno retorno = new Retorno();
+            retorno.TotalDeRegistros = retornoProduto.Count();
+            retorno.PaginaAtual = 1;
+            retorno.ItensPorPagina = 0;
+            retorno.Registros = retornoProduto.ToList<dynamic>();
+            #endregion
+
+            return retorno;
         }
         public ViewProduto GetById(int id)
         {
             Produto p = _db.Produto.Include(c => c.Categoria).SingleOrDefault(i => i.IdProduto == id);
+
+            if(p == null)
+            {
+                return null;
+            }
 
             ViewProduto viewProduto = new ViewProduto
             {
@@ -62,10 +76,10 @@ namespace api_loja.Services
 
             return viewProduto;
         }
-        public ICollection<ViewProduto> GetByName(string nome)
+        public Retorno GetByName(string nome)
         {
             ICollection<Produto> produtos = _db.Produto.Include(c => c.Categoria).Include(m => m.ModeloProduto).Where(i => i.NomeProduto.Contains(nome) || i.Categoria.NomeCategoria.Contains(nome) || i.DescricaoProduto.Contains(nome)).ToList();
-            List<ViewProduto> viewProduto = new List<ViewProduto>();
+            List<ViewProduto> retornoProduto = new List<ViewProduto>();
             foreach (Produto p in produtos)
             {
                 ViewProduto v = new ViewProduto
@@ -81,9 +95,17 @@ namespace api_loja.Services
                     Categoria = p.Categoria,
                     Imagens = new List<string> { "url", "url" }
                 };
-                viewProduto.Add(v);
+                retornoProduto.Add(v);
             }
-            return viewProduto;
+            #region Retorno
+            Retorno retorno = new Retorno();
+            retorno.TotalDeRegistros = retornoProduto.Count();
+            retorno.PaginaAtual = 1;
+            retorno.ItensPorPagina = 0;
+            retorno.Registros = retornoProduto.ToList<dynamic>();
+            #endregion
+
+            return retorno;
         }
         public async Task<bool> Post(ParamProduto param)
         {
