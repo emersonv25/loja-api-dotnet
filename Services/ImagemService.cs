@@ -52,16 +52,20 @@ namespace api_loja.Services
             foreach (var file in files)
             {
                 string fileName = GenerateNewFileName(file.FileName);
-                string fileFormat = GetFileFormat(fileName);
-
-                byte[] bytesFile = ConvertFileInByteArray(file);
-
-
                 string directory = CreateFilePath(fileName);
-
+                #region Salva o arquivo em disco
+                byte[] bytesFile = ConvertFileInByteArray(file);
                 await System.IO.File.WriteAllBytesAsync(directory, bytesFile);
 
-                string url = GetFileUrl(fileName);
+                /*
+                using (var stream = new FileStream(directory, FileMode.Create))
+                {
+                    file.CopyTo(stream);
+
+                }
+                */
+                #endregion
+
                 path.Add(fileName);
             }
 

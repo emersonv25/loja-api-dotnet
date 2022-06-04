@@ -38,7 +38,7 @@ namespace api_loja.Controllers
             }
 
         }
-        [HttpPost]
+        [HttpPost("{idProduto:int}")]
         public async Task<ActionResult> Post(int idProduto, IFormFileCollection files)
         {
             try
