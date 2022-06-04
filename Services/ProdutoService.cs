@@ -1,9 +1,11 @@
-﻿using api_loja.Data;
+﻿using api_loja.Controllers;
+using api_loja.Data;
 using api_loja.Models;
 using api_loja.Models.Object;
 using api_loja.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,18 +16,21 @@ namespace api_loja.Services
     public class ProdutoService : IProdutoService
     {
         private readonly AppDbContext _db;
-        public ProdutoService(AppDbContext context)
+        private readonly IConfiguration _configuration;
+
+        public ProdutoService(IConfiguration configuration, AppDbContext context)
         {
+            _configuration = configuration;
             _db = context;
 
         }
         public Retorno GetAll()
         {
-            ICollection<Produto> produtos = _db.Produto.Include(c => c.Categoria).Include(m => m.ModeloProduto).ToList();
+            ICollection<Produto> produtos = _db.Produto.Include(c => c.Categoria).Include(m => m.ModeloProduto).Include(i => i.ImagemProduto).ToList();
             List<ViewProduto> retornoProduto = new List<ViewProduto>();
             foreach (Produto p in produtos)
             {
-                ViewProduto v = new ViewProduto 
+                ViewProduto v = new ViewProduto
                 {
                     IdProduto = p.IdProduto,
                     NomeProduto = p.NomeProduto,
@@ -36,7 +41,7 @@ namespace api_loja.Services
                     ModeloProduto = p.ModeloProduto,
                     IdCategoria = p.IdCategoria,
                     Categoria = p.Categoria,
-                    Imagens = new List<string> { "url", "url" }
+                    Imagens = GetUrlImagemProduto(p.ImagemProduto)
                 };
                 retornoProduto.Add(v);
             }
@@ -71,7 +76,7 @@ namespace api_loja.Services
                 ModeloProduto = p.ModeloProduto,
                 IdCategoria = p.IdCategoria,
                 Categoria = p.Categoria,
-                Imagens = new List<string> { "url", "url" }
+                Imagens = GetUrlImagemProduto(p.ImagemProduto)
             };
 
             return viewProduto;
@@ -93,7 +98,7 @@ namespace api_loja.Services
                     ModeloProduto = p.ModeloProduto,
                     IdCategoria = p.IdCategoria,
                     Categoria = p.Categoria,
-                    Imagens = new List<string> { "url", "url" }
+                    Imagens = GetUrlImagemProduto(p.ImagemProduto)
                 };
                 retornoProduto.Add(v);
             }
@@ -181,5 +186,26 @@ namespace api_loja.Services
             return true;
 
         }
+        #region Files
+        private List<string> GetUrlImagemProduto(ICollection<ImagemProduto> imagemProduto)
+        {
+            List<string> urls = new List<string>();
+            foreach (ImagemProduto i in imagemProduto)
+            {
+                urls.Add(GetFileUrl(i.Path));
+            }
+            return urls;
+        }
+        private string GetFileUrl(string filePath)
+        {
+            var baseUrl = _configuration["Directories:BaseUrl"];
+
+            var fileUrl = _configuration["Directories:Images"]
+                .Replace("wwwroot", "")
+                .Replace("\\", "");
+
+            return (baseUrl + "/" + fileUrl + "/" + filePath);
+        }
+        #endregion
     }
 }

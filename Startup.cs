@@ -47,6 +47,7 @@ namespace api_loja
             services.AddTransient<IAuthService, AuthService>();
             services.AddTransient<ICategoriaService, CategoriaService>();
             services.AddTransient<IProdutoService, ProdutoService>();
+            services.AddTransient<IImagemService, ImagemService>();
 
             services.AddSwaggerGen(c =>
             {
@@ -81,7 +82,7 @@ namespace api_loja
             app.UseRouting();
 
             app.UseAuthorization();
-
+            app.UseStaticFiles();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

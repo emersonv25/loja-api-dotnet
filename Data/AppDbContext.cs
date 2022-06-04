@@ -43,12 +43,12 @@ namespace api_loja.Data
 
             // IMAGEM PRODUTO
             modelBuilder.Entity<ImagemProduto>().Property(i => i.IdProduto).IsRequired();
-            modelBuilder.Entity<ImagemProduto>().HasData(new ImagemProduto { IdImagemProduto = 1,Path = "/public/img/RTX.png", IdProduto = 1 });
-            modelBuilder.Entity<ImagemProduto>().HasData(new ImagemProduto { IdImagemProduto = 2, Path = "/public/img/RTX308012GB.png", IdProduto =  1});
-            modelBuilder.Entity<ImagemProduto>().HasData(new ImagemProduto { IdImagemProduto = 3, Path = "/public/img/RTX30708GB.png", IdProduto = 1 });
-            modelBuilder.Entity<ImagemProduto>().HasData(new ImagemProduto { IdImagemProduto = 4, Path = "/public/img/RX.png", IdProduto = 2 });
-            modelBuilder.Entity<ImagemProduto>().HasData(new ImagemProduto { IdImagemProduto = 5, Path = "/public/img/RX680012GB.png", IdProduto = 2 });
-            modelBuilder.Entity<ImagemProduto>().HasData(new ImagemProduto { IdImagemProduto = 6, Path = "/public/img/RX67008GB.png", IdProduto = 2});
+            modelBuilder.Entity<ImagemProduto>().HasData(new ImagemProduto { IdImagemProduto = 1,Path =  "default.png", IdProduto = 1 });
+            modelBuilder.Entity<ImagemProduto>().HasData(new ImagemProduto { IdImagemProduto = 2, Path = "default.png", IdProduto =  1});
+            modelBuilder.Entity<ImagemProduto>().HasData(new ImagemProduto { IdImagemProduto = 3, Path = "default.png", IdProduto = 1 });
+            modelBuilder.Entity<ImagemProduto>().HasData(new ImagemProduto { IdImagemProduto = 4, Path = "default.png", IdProduto = 2 });
+            modelBuilder.Entity<ImagemProduto>().HasData(new ImagemProduto { IdImagemProduto = 5, Path = "default.png", IdProduto = 2 });
+            modelBuilder.Entity<ImagemProduto>().HasData(new ImagemProduto { IdImagemProduto = 6, Path = "default.png", IdProduto = 2});
 
             // CATEGORIA
             modelBuilder.Entity<Categoria>().HasKey(p => p.IdCategoria);

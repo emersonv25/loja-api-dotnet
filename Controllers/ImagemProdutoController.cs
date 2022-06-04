@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using api_loja.Services.Interfaces;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -13,39 +14,50 @@ namespace api_loja.Controllers
     [ApiController]
     public class ImagemProdutoController : ControllerBase
     {
-        public static IWebHostEnvironment _environment;
-        public ImagemProdutoController(IWebHostEnvironment environment)
+        private readonly IImagemService _imagemService;
+
+        public ImagemProdutoController(IImagemService imagem)
         {
-            _environment = environment;
+            _imagemService = imagem;
         }
-        [HttpPost("upload")]
-        public async Task<IActionResult> UploadImagem(List<IFormFile> file)
+        [HttpGet("{idProduto:int}")]
+        public ActionResult<ICollection<string>> GetByProdutoId(int idProduto)
         {
-            var formData = Request.Form.Files;
-
-            if (formData.Count == 0)
-                return BadRequest("Arquivos vazio");
-            string directoryPath = Path.Combine(_environment.ContentRootPath, "public");
-            if (!Directory.Exists(directoryPath))
+            try
             {
-                Directory.CreateDirectory(directoryPath);
-            }
-            foreach (var formFile in formData)
-            {
-
-                string filePath = Path.Combine(directoryPath, formFile.FileName);
-
-                using (var stream = new FileStream(filePath, FileMode.Create))
+                ICollection<string> paths = _imagemService.GetUrlByProdutoId(idProduto);
+                if (paths == null)
                 {
-                    formFile.CopyTo(stream);
-
+                    return NotFound("Nenhum resultado encontrado");
                 }
+                return Ok(paths);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Não foi possível realizar a consulta: " + ex.Message);
             }
 
-            // Process uploaded files
-            // Don't rely on or trust the FileName property without validation.
+        }
+        [HttpPost]
+        public async Task<ActionResult> Post(int idProduto, IFormFileCollection files)
+        {
+            try
+            {
+                if (files.Count == 0 && Request.Form.Files.Count > 0)
+                    files = Request.Form.Files;
+                else if (Request.Form.Files.Count == 0)
+                    BadRequest("É necessário selecionar um arquivo de imagem.");
 
-            return Ok("Upload sucesso");
+                List<string> paths = await _imagemService.SaveFiles(files); // Salva as fotos e obtem o path
+                await _imagemService.Post(idProduto, paths); // Salva os paths no banco de dados
+
+                return Ok(paths);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest("Não foi possível realizar o upload da imagem: " + ex.Message);
+            }
+
         }
     }
 }

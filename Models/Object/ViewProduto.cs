@@ -13,7 +13,7 @@ namespace api_loja.Models.Object
         public decimal ValorProduto { get; set; }
         public decimal DescontoProduto { get; set; }
         public bool? FlAtivoProduto { get; set; }
-        public ICollection<string> Imagens { get; set; }
+        public List<string> Imagens { get; set; }
         public  ICollection<ModeloProduto> ModeloProduto { get; set; }
         public int IdCategoria { get; set; }
         public  Categoria Categoria { get; set; }
