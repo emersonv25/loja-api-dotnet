@@ -21,16 +21,18 @@ namespace api_loja.Services
         }
         public ICollection<Categoria> GetAll()
         {
-            return  _db.Categoria.Where(x => x.IdCategoriaPai == null).Include(x => x.SubCategorias).ToList();
+            ICollection<Categoria> categorias = _db.Categoria.Where(x => x.IdCategoriaPai == null).ToList();
+            _db.Categoria.Where(x => x.IdCategoriaPai != null).Load(); // Carrega as subcategorias
+            return categorias;
         }
         public Categoria GetById(int id)
         {
-            return _db.Categoria.Find(id);
+            Categoria categoria = _db.Categoria.Find(id);
+            _db.Categoria.Where(x => x.IdCategoriaPai != null).Load(); // Carrega as subcategorias
+
+            return categoria;
         }
-        public ICollection<Categoria> GetByName(string nome)
-        {
-            return _db.Categoria.Where(i => i.NomeCategoria.Contains(nome)).Include(x => x.SubCategorias).ToList();
-        }
+
         public async Task<Categoria> Post(ParamCategoria param)
         {
 

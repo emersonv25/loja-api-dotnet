@@ -57,21 +57,6 @@ namespace api_loja.Controllers
 
         }
 
-        [HttpGet("{nome}")]
-        public ActionResult<ICollection<Categoria>> GetByName(string nome)
-        {
-            try
-            {
-                ICollection<Categoria> categoria = _categoriaService.GetByName(nome);
-                return Ok(categoria);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest("Não foi possível realizar a consulta: " + ex.Message);
-            }
-
-        }
-
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] ParamCategoria param)
         {

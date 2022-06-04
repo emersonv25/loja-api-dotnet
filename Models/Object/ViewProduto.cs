@@ -14,8 +14,8 @@ namespace api_loja.Models.Object
         public decimal DescontoProduto { get; set; }
         public bool? FlAtivoProduto { get; set; }
         public ICollection<string> Imagens { get; set; }
-        public virtual ICollection<ModeloProduto> ModeloProduto { get; set; }
+        public  ICollection<ModeloProduto> ModeloProduto { get; set; }
         public int IdCategoria { get; set; }
-        public virtual Categoria Categoria { get; set; }
+        public  Categoria Categoria { get; set; }
     }
 }

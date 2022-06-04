@@ -11,7 +11,6 @@ namespace api_loja.Services.Interfaces
     {
         ICollection<Categoria> GetAll();
         Categoria GetById(int id);
-        ICollection<Categoria> GetByName(string nome);
         Task<Categoria> Post(ParamCategoria param);
         Task<bool> Put(int id, ParamCategoria param);
         Task<bool> Delete(int id);

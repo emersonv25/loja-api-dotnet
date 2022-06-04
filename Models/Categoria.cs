@@ -16,9 +16,10 @@ namespace api_loja.Models
         public string NomeCategoria { get; set; }
         public bool? FlAtivoCategoria { get; set; }
         [JsonIgnore]
-        public virtual ICollection<Produto> Produto { get; set; }
+        public  ICollection<Produto> Produto { get; set; }
+
         public int? IdCategoriaPai { get; set; }
-        public virtual ICollection<Categoria> SubCategorias { get; set; }
+        public  ICollection<Categoria> SubCategorias { get; set; }
 
 
     }

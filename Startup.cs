@@ -32,7 +32,7 @@ namespace api_loja
                 string msSqlConnection = Configuration.GetConnectionString("MsSqlConnection");
                 services.AddDbContextPool<AppDbContext>(options => {
                     options.UseSqlServer(msSqlConnection);
-                    options.UseLazyLoadingProxies();
+                    //options.UseLazyLoadingProxies();
                 });
             }
             else if(db == "mysql")
@@ -40,7 +40,7 @@ namespace api_loja
                 string mySqlConnection = Configuration.GetConnectionString("MySqlConnection");
                 services.AddDbContext<AppDbContext>(options => {
                     options.UseMySql(mySqlConnection, ServerVersion.AutoDetect(mySqlConnection));
-                    options.UseLazyLoadingProxies();
+                    //options.UseLazyLoadingProxies();
                 });
             }
             services.AddControllers();
