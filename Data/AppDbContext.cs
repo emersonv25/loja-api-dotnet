@@ -27,11 +27,11 @@ namespace api_loja.Data
             modelBuilder.Entity<Produto>().Property(p => p.DescontoProduto).HasColumnType("decimal(18,2)").IsRequired().HasDefaultValue(0.00m);
             modelBuilder.Entity<Produto>().Property(p => p.FlAtivoProduto).HasDefaultValueSql("1").IsRequired();
 
-            modelBuilder.Entity<Produto>().HasData(new Produto{IdProduto = 1, NomeProduto = "NVIDIA Geforce RTX", DescricaoProduto = "Uma placa de video", ValorProduto = 4999.99m, DescontoProduto = 4000.00m, FlAtivoProduto = true, IdCategoria = 3});
+            modelBuilder.Entity<Produto>().HasData(new Produto{IdProduto = 1, NomeProduto = "NVIDIA Geforce RTX", DescricaoProduto = "Uma placa de video", ValorProduto = 4999.99m, DescontoProduto = 400.00m, FlAtivoProduto = true, IdCategoria = 3});
             modelBuilder.Entity<ModeloProduto>().HasData(new ModeloProduto { IdModeloProduto = 1, NomeModelo = "3080 12GB", Estoque = 10, IdProduto = 1 });
             modelBuilder.Entity<ModeloProduto>().HasData(new ModeloProduto { IdModeloProduto = 2, NomeModelo = "3070 8GB", Estoque = 10, IdProduto = 1 });
 
-            modelBuilder.Entity<Produto>().HasData(new Produto { IdProduto = 2, NomeProduto = "AMD Radeon RX", DescricaoProduto = "Uma placa de video", ValorProduto = 4999.99m, DescontoProduto = 4000.00m, FlAtivoProduto = true, IdCategoria = 4 });
+            modelBuilder.Entity<Produto>().HasData(new Produto { IdProduto = 2, NomeProduto = "AMD Radeon RX", DescricaoProduto = "Uma placa de video", ValorProduto = 4999.99m, DescontoProduto = 400.00m, FlAtivoProduto = true, IdCategoria = 4 });
 
 
             // MODELOPRODUTO
@@ -44,11 +44,7 @@ namespace api_loja.Data
             // IMAGEM PRODUTO
             modelBuilder.Entity<ImagemProduto>().Property(i => i.IdProduto).IsRequired();
             modelBuilder.Entity<ImagemProduto>().HasData(new ImagemProduto { IdImagemProduto = 1,Path =  "default.png", IdProduto = 1 });
-            modelBuilder.Entity<ImagemProduto>().HasData(new ImagemProduto { IdImagemProduto = 2, Path = "default.png", IdProduto =  1});
-            modelBuilder.Entity<ImagemProduto>().HasData(new ImagemProduto { IdImagemProduto = 3, Path = "default.png", IdProduto = 1 });
             modelBuilder.Entity<ImagemProduto>().HasData(new ImagemProduto { IdImagemProduto = 4, Path = "default.png", IdProduto = 2 });
-            modelBuilder.Entity<ImagemProduto>().HasData(new ImagemProduto { IdImagemProduto = 5, Path = "default.png", IdProduto = 2 });
-            modelBuilder.Entity<ImagemProduto>().HasData(new ImagemProduto { IdImagemProduto = 6, Path = "default.png", IdProduto = 2});
 
             // CATEGORIA
             modelBuilder.Entity<Categoria>().HasKey(p => p.IdCategoria);

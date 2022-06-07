@@ -12,6 +12,7 @@ namespace api_loja.Models.Object
         public string DescricaoProduto { get; set; }
         public decimal ValorProduto { get; set; }
         public decimal DescontoProduto { get; set; }
+        public decimal ValorComDesconto { get; set; }
         public bool? FlAtivoProduto { get; set; }
         public List<string> Imagens { get; set; }
         public  ICollection<ModeloProduto> ModeloProduto { get; set; }
