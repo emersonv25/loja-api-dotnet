@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -24,6 +26,78 @@ namespace api_loja.Services
 
             return Sb.ToString();
         }
+        #region Utils
+        public static string GetFileFormat(string fullFileName)
+        {
+            var format = fullFileName.Split(".").Last();
+            return "." + format;
+        }
+
+        public static string GenerateNewFileName(string fileName)
+        {
+            var newFileName = (Guid.NewGuid().ToString() + "_" + fileName).ToLower();
+            newFileName = newFileName.Replace("-", "");
+
+            return newFileName;
+        }
+        public static List<string> SaveFiles(IFormFileCollection files, string directoryPath)
+        {
+            List<string> path = new List<string>();
+            foreach (var file in files)
+            {
+                string fileName = GenerateNewFileName(file.FileName);
+                string directory = CreateFilePath(fileName, directoryPath);
+                #region Salva o arquivo em disco
+                byte[] bytesFile = ConvertFileInByteArray(file);
+                System.IO.File.WriteAllBytesAsync(directory, bytesFile);
+
+                /*
+                using (var stream = new FileStream(directory, FileMode.Create))
+                {
+                    file.CopyTo(stream);
+
+                }
+                */
+                #endregion
+
+                path.Add(fileName);
+            }
+
+            return path;
+
+        }
+        public static string CreateFilePath(string fileName, string directoryPath)
+        {
+
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+
+            string filePath = Path.Combine(directoryPath, fileName);
+
+            return filePath;
+        }
+
+        public static string GetFileUrl(string filePath, string baseUrl, string imagesPath)
+        {
+
+            var fileUrl = imagesPath
+                .Replace("wwwroot", "")
+                .Replace("\\", "");
+
+            return (baseUrl + "/" + fileUrl + "/" + filePath);
+        }
+
+        public static byte[] ConvertFileInByteArray(IFormFile file)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                file.CopyTo(memoryStream);
+                return memoryStream.ToArray();
+            }
+        }
+        #endregion
     }
 }
 

@@ -39,16 +39,16 @@ namespace api_loja.Controllers
 
         }
         [HttpPost("{idProduto:int}")]
-        public async Task<ActionResult> Post(int idProduto, IFormFileCollection files)
+        public async Task<ActionResult> Post(int idProduto, IFormFileCollection images)
         {
             try
             {
-                if (files.Count == 0 && Request.Form.Files.Count > 0)
-                    files = Request.Form.Files;
+                if (images.Count == 0 && Request.Form.Files.Count > 0)
+                    images = Request.Form.Files;
                 else if (Request.Form.Files.Count == 0)
-                    BadRequest("É necessário selecionar um arquivo de imagem.");
+                    BadRequest("É necessário enviar um arquivo de imagem.");
 
-                List<string> paths = await _imagemService.SaveFiles(files); // Salva as fotos e obtem o path
+                List<string> paths = await _imagemService.SaveFiles(images); // Salva as fotos e obtem o path
                 await _imagemService.Post(idProduto, paths); // Salva os paths no banco de dados
 
                 return Ok("Upload realizado com sucesso");

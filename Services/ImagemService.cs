@@ -31,7 +31,7 @@ namespace api_loja.Services
             List<string> urls = new List<string>();
             foreach(ImagemProduto i in imagens)
             {
-                urls.Add(GetFileUrl(i.Path));
+                urls.Add(Utils.GetFileUrl(i.Path, _configuration["Directories:BaseUrl"], _configuration["Directories:ImagesPath"]));
             }
             return urls;
         }
@@ -51,10 +51,10 @@ namespace api_loja.Services
             List<string> path = new List<string>();
             foreach (var file in files)
             {
-                string fileName = GenerateNewFileName(file.FileName);
-                string directory = CreateFilePath(fileName);
+                string fileName = Utils.GenerateNewFileName(file.FileName);
+                string directory = Utils.CreateFilePath(fileName, _configuration["Directories:ImagesPath"]);
                 #region Salva o arquivo em disco
-                byte[] bytesFile = ConvertFileInByteArray(file);
+                byte[] bytesFile = Utils.ConvertFileInByteArray(file);
                 await System.IO.File.WriteAllBytesAsync(directory, bytesFile);
 
                 /*
@@ -73,54 +73,5 @@ namespace api_loja.Services
 
         }
 
-        #region Utils
-        private string GetFileFormat(string fullFileName)
-        {
-            var format = fullFileName.Split(".").Last();
-            return "." + format;
-        }
-
-        private string GenerateNewFileName(string fileName)
-        {
-            var newFileName = (Guid.NewGuid().ToString() + "_" + fileName).ToLower();
-            newFileName = newFileName.Replace("-", "");
-
-            return newFileName;
-        }
-
-        private string CreateFilePath(string fileName)
-        {
-            string directoryPath = Path.Combine(Directory.GetCurrentDirectory(), _configuration["Directories:Images"]);
-
-            if (!Directory.Exists(directoryPath))
-            {
-                Directory.CreateDirectory(directoryPath);
-            }
-
-            string filePath = Path.Combine(directoryPath, fileName);
-
-            return filePath;
-        }
-
-        private string GetFileUrl(string filePath)
-        {
-            var baseUrl = _configuration["Directories:BaseUrl"];
-
-            var fileUrl = _configuration["Directories:Images"]
-                .Replace("wwwroot", "")
-                .Replace("\\", "");
-
-            return (baseUrl + "/" + fileUrl + "/" + filePath);
-        }
-
-        private byte[] ConvertFileInByteArray(IFormFile file)
-        {
-            using (var memoryStream = new MemoryStream())
-            {
-                file.CopyTo(memoryStream);
-                return memoryStream.ToArray();
-            }
-        }
-        #endregion
     }
 }

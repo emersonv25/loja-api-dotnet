@@ -2,8 +2,11 @@
 using api_loja.Models;
 using api_loja.Models.Object;
 using api_loja.Services.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -69,11 +72,18 @@ namespace api_loja.Controllers
 
         // POST api/<ProdutoController>
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] ParamProduto param)
+        public async Task<ActionResult> Post([FromForm] ParamProduto param)
         {
             try
             {
-                await _produtoService.Post(param);
+                if (param.Files.Count == 0 && Request.Form.Files.Count > 0)
+                    param.Files = Request.Form.Files;
+                else if (Request.Form.Files.Count == 0)
+                    BadRequest("É necessário enviar ao menos 1 imagem para o produto.");
+
+                ObjectProduto produto = JsonConvert.DeserializeObject<ObjectProduto>(param.Json.ToString());
+
+                await _produtoService.Post(produto, param.Files);
                 return Ok("Produto cadastrado com sucesso !");
             }
             catch(Exception ex)

@@ -3,6 +3,7 @@ using api_loja.Data;
 using api_loja.Models;
 using api_loja.Models.Object;
 using api_loja.Services.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -115,8 +116,9 @@ namespace api_loja.Services
 
             return retorno;
         }
-        public async Task<bool> Post(ParamProduto param)
+        public async Task<bool> Post(ObjectProduto param, IFormFileCollection files)
         {
+
             List<ModeloProduto> modelos = new List<ModeloProduto>();
             foreach (ParamModeloProduto m in param.ModeloProduto)
             {
@@ -127,15 +129,27 @@ namespace api_loja.Services
                 };
                 modelos.Add(modelo);
             }
+            List<string> paths = Utils.SaveFiles(files, _configuration["Directories:ImagesPath"]); // Salva as fotos e obtem o path
+            List<ImagemProduto> imagens = new List<ImagemProduto>();
+            foreach(string path in paths)
+            {
+                ImagemProduto image = new ImagemProduto
+                {
+                    Path = path
+                };
+                imagens.Add(image);
+            }
 
             Produto produto = new Produto
             {
                 NomeProduto = param.NomeProduto,
                 ValorProduto = param.ValorProduto,
+                DescontoProduto = param.DescontoProduto,
                 DescricaoProduto = param.DescricaoProduto,
                 IdCategoria = param.IdCategoria,
                 FlAtivoProduto = param.FlAtivoProduto,
-                ModeloProduto = modelos
+                ModeloProduto = modelos,
+                ImagemProduto = imagens
             };
 
 
@@ -195,19 +209,9 @@ namespace api_loja.Services
             List<string> urls = new List<string>();
             foreach (ImagemProduto i in imagemProduto)
             {
-                urls.Add(GetFileUrl(i.Path));
+                urls.Add(Utils.GetFileUrl(i.Path, _configuration["Directories:BaseUrl"], _configuration["Directories:ImagesPath"]));
             }
             return urls;
-        }
-        private string GetFileUrl(string filePath)
-        {
-            var baseUrl = _configuration["Directories:BaseUrl"];
-
-            var fileUrl = _configuration["Directories:Images"]
-                .Replace("wwwroot", "")
-                .Replace("\\", "");
-
-            return (baseUrl + "/" + fileUrl + "/" + filePath);
         }
         #endregion
     }
