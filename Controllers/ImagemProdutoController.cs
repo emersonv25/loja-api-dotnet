@@ -51,7 +51,7 @@ namespace api_loja.Controllers
                 List<string> paths = await _imagemService.SaveFiles(files); // Salva as fotos e obtem o path
                 await _imagemService.Post(idProduto, paths); // Salva os paths no banco de dados
 
-                return Ok(paths);
+                return Ok("Upload realizado com sucesso");
             }
             catch(Exception ex)
             {

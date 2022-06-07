@@ -58,7 +58,7 @@ namespace api_loja.Services
         }
         public ViewProduto GetById(int id)
         {
-            Produto p = _db.Produto.Include(c => c.Categoria).SingleOrDefault(i => i.IdProduto == id);
+            Produto p = _db.Produto.Include(c => c.Categoria).Include(m => m.ModeloProduto).Include(i => i.ImagemProduto).SingleOrDefault(i => i.IdProduto == id);
 
             if(p == null)
             {
@@ -83,7 +83,7 @@ namespace api_loja.Services
         }
         public Retorno GetByName(string nome)
         {
-            ICollection<Produto> produtos = _db.Produto.Include(c => c.Categoria).Include(m => m.ModeloProduto).Where(i => i.NomeProduto.Contains(nome) || i.Categoria.NomeCategoria.Contains(nome) || i.DescricaoProduto.Contains(nome)).ToList();
+            ICollection<Produto> produtos = _db.Produto.Include(c => c.Categoria).Include(m => m.ModeloProduto).Include(i => i.ImagemProduto).Where(i => i.NomeProduto.Contains(nome) || i.Categoria.NomeCategoria.Contains(nome) || i.DescricaoProduto.Contains(nome)).ToList();
             List<ViewProduto> retornoProduto = new List<ViewProduto>();
             foreach (Produto p in produtos)
             {
