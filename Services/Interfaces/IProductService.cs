@@ -9,9 +9,9 @@ namespace api_loja.Services.Interfaces
 {
     public interface IProductService
     {
-        Retorno GetAll();
+        Result GetAll();
         ViewProduct GetById(int id);
-        Retorno GetByName(string name);
+        Result GetByName(string name);
         Task<bool> Post(ObjectProduct param, IFormFileCollection images);
         Task<bool> Put(int id, ParamProductEdit param);
         Task<bool> Delete(int id);

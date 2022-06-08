@@ -5,38 +5,38 @@ using System.Threading.Tasks;
 
 namespace api_loja.Models.Object
 {
-    public class Retorno
+    public class Result
     {
-        private List<object> registros;
+        private List<object> results;
 
-        public List<object> Registros
+        public List<object> Results
         {
-            get { return registros; }
-            set { registros = value; }
+            get { return results; }
+            set { results = value; }
         }
 
-        private int totalDeRegistros;
+        private int totalResults;
 
-        public int TotalDeRegistros
+        public int TotalResults
         {
-            get { return totalDeRegistros; }
-            set { totalDeRegistros = value; }
+            get { return totalResults; }
+            set { totalResults = value; }
         }
 
-        private int itensPorPagina;
+        private int itemsPerPage;
 
-        public int ItensPorPagina
+        public int ItemsPerPage
         {
-            get { return itensPorPagina; }
-            set { itensPorPagina = value; }
+            get { return itemsPerPage; }
+            set { itemsPerPage = value; }
         }
 
-        private int paginaAtual;
+        private int currentPage;
 
-        public int PaginaAtual
+        public int CurrentPage
         {
-            get { return paginaAtual; }
-            set { paginaAtual = value; }
+            get { return currentPage; }
+            set { currentPage = value; }
         }
 
     }

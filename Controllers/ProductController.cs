@@ -30,9 +30,9 @@ namespace api_loja.Controllers
         {
             try
             {
-                Retorno retorno = _productService.GetAll();
+                Result result = _productService.GetAll();
 
-                return Ok(retorno);
+                return Ok(result);
             }
             catch(Exception ex)
             {
@@ -84,13 +84,14 @@ namespace api_loja.Controllers
                 ObjectProduct product = JsonConvert.DeserializeObject<ObjectProduct>(param.Json.ToString());
 
                 // Validação conteudo do json
+                CheckParamObjectProduct(product);
 
                 await _productService.Post(product, param.Files);
                 return Ok("Produto cadastrado com sucesso !");
             }
             catch(Exception ex)
             {
-                return BadRequest("Não foi possivel cadastrar o product: " + ex.Message);
+                return BadRequest("Não foi possivel cadastrar o produto: " + ex.Message);
             }
 
         }
@@ -124,6 +125,27 @@ namespace api_loja.Controllers
                 return BadRequest("Não foi possivel deletar o product: " + ex.Message);
             }
 
+        }
+        private bool CheckParamObjectProduct(ObjectProduct product)
+        {
+            if (string.IsNullOrEmpty(product.Title))
+                throw new Exception("O título do produto é obrigatório");
+            if(product.Value == 0.0m)
+                throw new Exception("O Valor do produto é obrigatório");
+            if (product.CategoryId == 0)
+                throw new Exception("O Id da categoria é obrigatório");
+            if (product.ProductType == null)
+                throw new Exception("É obrigatório ao menos 1 tipo de produto");
+
+            foreach(ParamProductType t in product.ProductType)
+            {
+                if(string.IsNullOrEmpty(t.Title))
+                    throw new Exception("O título do tipo do produto é obrigatório");
+                if(t.Inventory == 0)
+                    throw new Exception("A quantidade em estoque é obrigatorio");
+            }
+
+            return true;
         }
     }
 }

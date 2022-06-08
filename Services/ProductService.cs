@@ -25,7 +25,7 @@ namespace api_loja.Services
             _db = context;
 
         }
-        public Retorno GetAll()
+        public Result GetAll()
         {
             ICollection<Product> products = _db.Product.Include(c => c.Category).Include(m => m.ProductType).Include(i => i.ProductImages).ToList();
             List<ViewProduct> retornoProduct = new List<ViewProduct>();
@@ -49,14 +49,14 @@ namespace api_loja.Services
             }
 
             #region Retorno
-            Retorno retorno = new Retorno();
-            retorno.TotalDeRegistros = retornoProduct.Count();
-            retorno.PaginaAtual = 1;
-            retorno.ItensPorPagina = 0;
-            retorno.Registros = retornoProduct.ToList<dynamic>();
+            Result result = new Result();
+            result.TotalResults = retornoProduct.Count();
+            result.CurrentPage = 1;
+            result.ItemsPerPage = retornoProduct.Count();
+            result.Results = retornoProduct.ToList<dynamic>();
             #endregion
 
-            return retorno;
+            return result;
         }
         public ViewProduct GetById(int id)
         {
@@ -84,7 +84,7 @@ namespace api_loja.Services
 
             return viewProduct;
         }
-        public Retorno GetByName(string name)
+        public Result GetByName(string name)
         {
             ICollection<Product> products = _db.Product.Include(c => c.Category).Include(m => m.ProductType).Include(i => i.ProductImages).Where(i => i.Title.Contains(name) || i.Category.Title.Contains(name) || i.Description.Contains(name)).ToList();
             List<ViewProduct> retornoProduct = new List<ViewProduct>();
@@ -107,14 +107,14 @@ namespace api_loja.Services
                 retornoProduct.Add(v);
             }
             #region Retorno
-            Retorno retorno = new Retorno();
-            retorno.TotalDeRegistros = retornoProduct.Count();
-            retorno.PaginaAtual = 1;
-            retorno.ItensPorPagina = 0;
-            retorno.Registros = retornoProduct.ToList<dynamic>();
+            Result result = new Result();
+            result.TotalResults = retornoProduct.Count();
+            result.CurrentPage = 1;
+            result.ItemsPerPage = retornoProduct.Count();
+            result.Results = retornoProduct.ToList<dynamic>();
             #endregion
 
-            return retorno;
+            return result;
         }
         public async Task<bool> Post(ObjectProduct param, IFormFileCollection files)
         {
