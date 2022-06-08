@@ -7,39 +7,35 @@ using System.Threading.Tasks;
 
 namespace api_loja.Models.Object
 {
-    public class ObjectProduto
+    public class ObjectProduct
     {
-        [Required(ErrorMessage = "O nome do produto é obrigatório", AllowEmptyStrings = false)]
-        public string NomeProduto { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public decimal Value { get; set; }
+        public decimal Discount { get; set; }
 
-        public string DescricaoProduto { get; set; }
+        public bool Enabled { get; set; }
 
-        [Required(ErrorMessage = "O valor é obrigatório", AllowEmptyStrings = false)]
-        public decimal ValorProduto { get; set; }
-        public decimal DescontoProduto { get; set; }
-
-        public bool FlAtivoProduto { get; set; }
-
-        public int IdCategoria { get; set; }
-        public List<ParamModeloProduto> ModeloProduto { get; set; }
+        public int CategoryId { get; set; }
+        public List<ParamProductType> ProductType { get; set; }
     }
-    public class ParamProduto
+    public class FormProduct
     {
         public string Json { get; set; }
         public IFormFileCollection Files { get; set; }
     }
-    public class ParamEditarProduto
+    public class ParamProductEdit
     {
-        public string NomeProduto { get; set; }
+        public string Title { get; set; }
 
-        public string DescricaoProduto { get; set; }
+        public string Description { get; set; }
 
-        public decimal? ValorProduto { get; set; }
-        public decimal? DescontoProduto { get; set; }
+        public decimal? Value { get; set; }
+        public decimal? Discount { get; set; }
 
-        public bool? FlAtivoProduto { get; set; }
+        public bool? Enabled { get; set; }
 
-        public int? IdCategoria { get; set; }
+        public int? CategoryId { get; set; }
 
     }
 

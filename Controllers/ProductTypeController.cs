@@ -12,36 +12,36 @@ namespace api_loja.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ModeloProdutoController : ControllerBase
+    public class ProductTypeController : ControllerBase
     {
         private readonly AppDbContext _db;
 
-        public ModeloProdutoController(AppDbContext context)
+        public ProductTypeController(AppDbContext context)
         {
             _db = context;
         }
 
-        // GET api/<ModeloProdutoController>/5
+        // GET api/<ProductTypeController>/5
         [HttpGet("{id:int}")]
-        public ActionResult<ModeloProduto> GetById(int id)
+        public ActionResult<ProductType> GetById(int id)
         {
-            ModeloProduto modelo = _db.ModeloProduto.Find(id);
-            if (modelo == null)
+            ProductType type = _db.ProductType.Find(id);
+            if (type == null)
                 return NotFound("Modelo não encontrado");
-            return Ok(new { modelo });
+            return Ok(new { type });
         }
 
-        // POST api/<ModeloProdutoController>
+        // POST api/<ProductTypeController>
         [HttpPost]
-        public async Task<ActionResult<ModeloProduto>> Post([FromBody] ParamModelo param)
+        public async Task<ActionResult<ProductType>> Post([FromBody] ParamType param)
         {
             try
             {
-                ModeloProduto modelo = new ModeloProduto { NomeModelo = param.NomeModelo, Estoque = param.Estoque, IdProduto = param.IdProduto };
+                ProductType type = new ProductType { Title = param.Title, Inventory = param.Inventory, ProductId = param.ProductId };
 
-                _db.ModeloProduto.Add(modelo);
+                _db.ProductType.Add(type);
                 await _db.SaveChangesAsync();
-                return Ok(modelo);
+                return Ok(type);
             }
             catch(Exception ex)
             {
@@ -50,31 +50,31 @@ namespace api_loja.Controllers
 
         }
 
-        // PUT api/<ModeloProdutoController>/5
+        // PUT api/<ProductTypeController>/5
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(int id, [FromBody] ParamEditarModeloProduto param)
+        public async Task<ActionResult> Put(int id, [FromBody] ParamEditProductType param)
         {
             try
             {
-                ModeloProduto modelo = await _db.ModeloProduto.FindAsync(id);
-                if (modelo == null)
+                ProductType type = await _db.ProductType.FindAsync(id);
+                if (type == null)
                 {
                     return NotFound(new { error = "Modelo não encontrado" });
                 }
 
-                if (!string.IsNullOrEmpty(param.NomeModelo))
-                    modelo.NomeModelo = param.NomeModelo;
-                if(param.Estoque != null)
+                if (!string.IsNullOrEmpty(param.Title))
+                    type.Title = param.Title;
+                if(param.Inventory != null)
                 {
-                    modelo.Estoque = param.Estoque.Value;
+                    type.Inventory = param.Inventory.Value;
                 }
-                if(param.FlAtivoModelo.HasValue && param.FlAtivoModelo.Value != modelo.FlAtivoModelo)
+                if(param.Enabled.HasValue && param.Enabled.Value != type.Enabled)
                 {
-                    modelo.FlAtivoModelo = param.FlAtivoModelo.Value;
+                    type.Enabled = param.Enabled.Value;
                 }
 
                 await _db.SaveChangesAsync();
-                return Ok(modelo);
+                return Ok(type);
             }
             catch (Exception ex)
             {
@@ -82,24 +82,24 @@ namespace api_loja.Controllers
             }
         }
 
-        // DELETE api/<ModeloProdutoController>/5
+        // DELETE api/<ProductTypeController>/5
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
             try
             {
-                ModeloProduto modelo = await _db.ModeloProduto.FindAsync(id);
-                if (modelo == null)
+                ProductType type = await _db.ProductType.FindAsync(id);
+                if (type == null)
                 {
                     return NotFound(new { error = "Modelo não encontrado" });
                 }
-                _db.ModeloProduto.Remove(modelo);
+                _db.ProductType.Remove(type);
                 await _db.SaveChangesAsync();
                 return Ok("Deletado com sucesso !");
             }
             catch (Exception ex)
             {
-                return BadRequest("Não foi possivel deletar o modelo: " + ex.Message);
+                return BadRequest("Não foi possivel deletar o tipo: " + ex.Message);
             }
 
         }

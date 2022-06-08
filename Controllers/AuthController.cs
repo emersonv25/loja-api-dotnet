@@ -28,14 +28,14 @@ namespace api_loja.Controllers
         [HttpPost]
         [Route("login")]
         [AllowAnonymous]
-        public ActionResult<dynamic> Autenticar([FromBody]ParamLogin user)
+        public ActionResult<dynamic> Login([FromBody]ParamLogin user)
         {
-            Usuario usuario = _authService.Login(user.Username, user.Password);
+            User usuario = _authService.Login(user.Username, user.Password);
             if (usuario == null){
                 return BadRequest("Usuário ou senha inválidos");
             }
 
-            if(usuario.FlAtivoUsuario == true){
+            if(usuario.Enabled == false){
                 return BadRequest("Usuário Inativo !");
             }
 
@@ -48,24 +48,24 @@ namespace api_loja.Controllers
         }
         
         [HttpPost]
-        [Route("cadastrar")]
+        [Route("register")]
         [AllowAnonymous]
-        public async Task<ActionResult<dynamic>> Cadastrar([FromBody]ParamCadastro user)
+        public async Task<ActionResult<dynamic>> Post([FromBody]ParamRegister user)
         {
-            if(user.Username != null && user.Password != null && user.Nome != null){
+            if(user.Username != null && user.Password != null && user.FullName != null){
                 if(user.Password.Length < 4){
                     return BadRequest("A Senha precisa conter mais de 4 caracteres");
                 }
                 if(user.Username.Length < 4){
                     return BadRequest("O nome de usuário precisa conter mais de 4 caracteres");
                 }
-                if(user.Nome == ""){
+                if(user.FullName == ""){
                     return BadRequest("O Nome não pode ser nulo");
                 }
-                if(_authService.GetUsuario(user.Username) != null){
+                if(_authService.GetUser(user.Username) != null){
                     return BadRequest("Nome de usuário já cadastrado");
                 }
-                if(_authService.GetUsuarioByEmail(user.Email) != null){
+                if(_authService.GetUserByEmail(user.Email) != null){
                     return BadRequest("E-mail já cadastrado");
                 }
             }
@@ -73,8 +73,8 @@ namespace api_loja.Controllers
                 return BadRequest("Dados para o cadastro inválidos !");
             }
 
-            Usuario usuario = await _authService.Cadastrar(user);
-            if (usuario == null){
+            User newUser = await _authService.Register(user);
+            if (newUser == null){
                 return BadRequest(new {error = "Não foi possivel cadastrar o usuário"});
             }
 
@@ -82,13 +82,11 @@ namespace api_loja.Controllers
 
         }
         [HttpPut]
-        [Route("admin/editar")]
+        [Route("admin/update")]
         [Authorize(Roles = "admin")]
-        public async Task<ActionResult<dynamic>> EditarUsuarioAdm(int id, Usuario usuarioEditado)
+        public async Task<ActionResult<dynamic>> UpdateAdmin(int id, User usuarioEditado)
         {
-
-            Usuario usuario = new Usuario();
-            usuario = await _authService.PutUsuarioAdm(id, usuarioEditado);
+            User usuario = await _authService.PutUserAdm(id, usuarioEditado);
             if(usuario == null){
                 return BadRequest("Falha ao editar usuário");
             }
@@ -96,27 +94,25 @@ namespace api_loja.Controllers
             return ("Usuário editado com sucesso !");
         }
         [HttpPut]
-        [Route("editar")]
+        [Route("update")]
         [Authorize]
-        public async Task<ActionResult<dynamic>> EditarUsuario(int id, Usuario usuarioEditado)
+        public async Task<ActionResult<dynamic>> Update(int id, User userEdited)
         {
-
-            Usuario usuario = new Usuario();
-            usuario = await _authService.PutUsuario(id, usuarioEditado);
-            if(usuario == null){
+            User user = await _authService.PutUser(id, userEdited);
+            if(user == null){
                 return BadRequest("Falha ao editar usuário");
             }
 
             return ("Usuário editado com sucesso !");
         }
         [HttpDelete]
-        [Route("admin/deletar")]
+        [Route("admin/delete")]
         [Authorize(Roles = "admin")]
-        public async Task<ActionResult<dynamic>> DeleteUsuarioAdm(int id)
+        public async Task<ActionResult<dynamic>> DeleteUserAdm(int id)
         {
 
-            bool usuario = await _authService.DeleteUsuario(id);
-            if(usuario == false){
+            bool user = await _authService.DeleteUser(id);
+            if(user == false){
                 return BadRequest("Falha ao deletar usuário");
             }
 
@@ -125,12 +121,12 @@ namespace api_loja.Controllers
 
 
         [HttpGet]
-        [Route("autenticado")]
+        [Route("authenticated")]
         [Authorize]
         public string Autenticado() => String.Format("Autenticado: {0}", User.Identity.Name);
 
         [HttpGet]
-        [Route("anonimo")]
+        [Route("anonymous")]
         [AllowAnonymous]
         public string Anonimo() => "Anônimo";
 

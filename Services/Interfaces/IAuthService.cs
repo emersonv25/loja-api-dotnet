@@ -9,13 +9,13 @@ namespace api_loja.Services.Interfaces
 {
     public interface IAuthService
     {
-        Usuario Login(string username, string password); 
-        Task<Usuario> Cadastrar(ParamCadastro usuario); 
-        Usuario GetUsuario(string username); 
-        Usuario GetUsuarioByEmail(string email); 
-        Task<Usuario> GetUsuarioById(int id); 
-        Task<Usuario> PutUsuario(int id, Usuario usuarioEditado);
-        Task <bool> DeleteUsuario(int id);
-        Task<Usuario> PutUsuarioAdm(int id, Usuario usuarioEditado);
+        User Login(string username, string password); 
+        Task<User> Register(ParamRegister usuario); 
+        User GetUser(string username); 
+        User GetUserByEmail(string email); 
+        Task<User> GetUserById(int id); 
+        Task<User> PutUser(int id, User usuarioEditado);
+        Task <bool> DeleteUser(int id);
+        Task<User> PutUserAdm(int id, User usuarioEditado);
     }
 }

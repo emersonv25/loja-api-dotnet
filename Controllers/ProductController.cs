@@ -16,21 +16,21 @@ namespace api_loja.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProdutoController : ControllerBase
+    public class ProductController : ControllerBase
     {
-        private readonly IProdutoService _produtoService;
-        public ProdutoController(IProdutoService produtoService)
+        private readonly IProductService _productService;
+        public ProductController(IProductService productService)
         {
-            _produtoService = produtoService;
+            _productService = productService;
         }
 
-        // GET: api/<ProdutoController>
+        // GET: api/<ProductController>
         [HttpGet]
-        public ActionResult<ICollection<Produto>> GetAll()
+        public ActionResult<ICollection<Product>> GetAll()
         {
             try
             {
-                Retorno retorno = _produtoService.GetAll();
+                Retorno retorno = _productService.GetAll();
 
                 return Ok(retorno);
             }
@@ -40,29 +40,29 @@ namespace api_loja.Controllers
             }
         }
 
-        // GET api/<ProdutoController>/5
+        // GET api/<ProductController>/5
         [HttpGet("{id:int}")]
-        public ActionResult<Produto> GetById(int id)
+        public ActionResult<Product> GetById(int id)
         {
             try
             {
-                ViewProduto produto = _produtoService.GetById(id);
-                if (produto == null)
+                ViewProduct product = _productService.GetById(id);
+                if (product == null)
                     return NotFound("Produto não encontrado");
-                return Ok(produto);
+                return Ok(product);
             }
             catch(Exception ex)
             {
                 return BadRequest("Não foi possível realizar a consulta: " + ex.Message);
             }
         }
-        // GET api/<CategoriaController>/Placa
-        [HttpGet("{nome}")]
-        public ActionResult<ICollection<Produto>> GetByName(string nome)
+        // GET api/<CategoryController>/Placa
+        [HttpGet("{name}")]
+        public ActionResult<ICollection<Product>> GetByName(string name)
         {
             try
             {
-                return Ok(_produtoService.GetByName(nome));
+                return Ok(_productService.GetByName(name));
             }
             catch (Exception ex)
             {
@@ -70,56 +70,58 @@ namespace api_loja.Controllers
             }
         }
 
-        // POST api/<ProdutoController>
+        // POST api/<ProductController>
         [HttpPost]
-        public async Task<ActionResult> Post([FromForm] ParamProduto param)
+        public async Task<ActionResult> Post([FromForm] FormProduct param)
         {
             try
             {
                 if (param.Files.Count == 0 && Request.Form.Files.Count > 0)
                     param.Files = Request.Form.Files;
                 else if (Request.Form.Files.Count == 0)
-                    BadRequest("É necessário enviar ao menos 1 imagem para o produto.");
+                    BadRequest("É necessário enviar ao menos 1 image para o product.");
 
-                ObjectProduto produto = JsonConvert.DeserializeObject<ObjectProduto>(param.Json.ToString());
+                ObjectProduct product = JsonConvert.DeserializeObject<ObjectProduct>(param.Json.ToString());
 
-                await _produtoService.Post(produto, param.Files);
+                // Validação conteudo do json
+
+                await _productService.Post(product, param.Files);
                 return Ok("Produto cadastrado com sucesso !");
             }
             catch(Exception ex)
             {
-                return BadRequest("Não foi possivel cadastrar o produto: " + ex.Message);
+                return BadRequest("Não foi possivel cadastrar o product: " + ex.Message);
             }
 
         }
 
-        // PUT api/<ProdutoController>/5
+        // PUT api/<ProductController>/5
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(int id, [FromBody] ParamEditarProduto param)
+        public async Task<ActionResult> Put(int id, [FromBody] ParamProductEdit param)
         {
             try
             {
-                await _produtoService.Put(id, param);
+                await _productService.Put(id, param);
                 return Ok("Produto editado com sucesso");
             }
             catch (Exception ex)
             {
-                return BadRequest( "Não foi possivel cadastrar o produto: " + ex.Message);
+                return BadRequest( "Não foi possivel cadastrar o product: " + ex.Message);
             }
         }
 
-        // DELETE api/<ProdutoController>/5
+        // DELETE api/<ProductController>/5
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
             try
             {
-                await _produtoService.Delete(id);
+                await _productService.Delete(id);
                 return Ok("Deletado com sucesso !");
             }
             catch (Exception ex)
             {
-                return BadRequest("Não foi possivel deletar o produto: " + ex.Message);
+                return BadRequest("Não foi possivel deletar o product: " + ex.Message);
             }
 
         }

@@ -15,7 +15,7 @@ namespace api_loja.Models.Object
         [StringLength(64, MinimumLength = 4)]
         public string Password { get; set; }
     }
-    public class ParamCadastro
+    public class ParamRegister
     {
         [Required(ErrorMessage = "O Nome de usuário é obrigatorio", AllowEmptyStrings = false)]
         [StringLength(64, MinimumLength = 4)]
@@ -23,7 +23,7 @@ namespace api_loja.Models.Object
 
         [Required(ErrorMessage = "Seu nome é obrigatório", AllowEmptyStrings = false)]
         [StringLength(64, MinimumLength = 4)]
-        public string Nome { get; set; }
+        public string FullName { get; set; }
 
         [Required(ErrorMessage = "Uma senha é obrigatória", AllowEmptyStrings = false)]
         [StringLength(64, MinimumLength = 4)]

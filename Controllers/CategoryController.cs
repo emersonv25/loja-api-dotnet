@@ -12,23 +12,23 @@ namespace api_loja.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoriaController : ControllerBase
+    public class CategoryController : ControllerBase
     {
-        private readonly ICategoriaService _categoriaService;
-        public CategoriaController(ICategoriaService categoriaService)
+        private readonly ICategoryService _categoryService;
+        public CategoryController(ICategoryService categoryService)
         {
-            _categoriaService = categoriaService;
+            _categoryService = categoryService;
         }
 
 
         [HttpGet]
-        public ActionResult<ICollection<Categoria>> GetAll()
+        public ActionResult<ICollection<Category>> GetAll()
         {
 
             try
             {
-                ICollection<Categoria> categorias = _categoriaService.GetAll();
-                return Ok(categorias);
+                ICollection<Category> categories = _categoryService.GetAll();
+                return Ok(categories);
             }
             catch (Exception ex)
             {
@@ -39,16 +39,16 @@ namespace api_loja.Controllers
 
 
         [HttpGet("{id:int}")]
-        public ActionResult<Categoria> GetById(int id)
+        public ActionResult<Category> GetById(int id)
         {
             try
             {
-                Categoria categoria = _categoriaService.GetById(id);
-                if (categoria == null)
+                Category category = _categoryService.GetById(id);
+                if (category == null)
                 {
                     return NotFound("Nenhum resultado encontrado");
                 }
-                return Ok( new { categoria });
+                return Ok( new { category });
             }
             catch (Exception ex)
             {
@@ -58,12 +58,12 @@ namespace api_loja.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] ParamCategoria param)
+        public async Task<ActionResult> Post([FromBody] ParamCategory param)
         {
             try
             {
-                Categoria categoria = await _categoriaService.Post(param);
-                return Ok(new { message = "Categoria cadastrado com sucesso !" });
+                Category category = await _categoryService.Post(param);
+                return Ok("Categoria cadastrado com sucesso !");
             }
             catch(Exception ex)
             {
@@ -74,11 +74,11 @@ namespace api_loja.Controllers
 
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(int id, [FromBody] ParamCategoria param)
+        public async Task<ActionResult> Put(int id, [FromBody] ParamCategory param)
         {
             try
             {
-                await _categoriaService.Put(id, param);
+                await _categoryService.Put(id, param);
                 return Ok("Categoria editada com sucesso !");
             }
             catch(Exception ex)
@@ -92,7 +92,7 @@ namespace api_loja.Controllers
         {
             try
             {
-                await _categoriaService.Delete(id);
+                await _categoryService.Delete(id);
                 return Ok("Categoria deletada com sucesso");
             }
             catch(Exception ex)

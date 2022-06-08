@@ -7,13 +7,13 @@ using Microsoft.AspNetCore.Http;
 
 namespace api_loja.Services.Interfaces
 {
-    public interface IProdutoService
+    public interface IProductService
     {
         Retorno GetAll();
-        ViewProduto GetById(int id);
-        Retorno GetByName(string nome);
-        Task<bool> Post(ObjectProduto param, IFormFileCollection images);
-        Task<bool> Put(int id, ParamEditarProduto param);
+        ViewProduct GetById(int id);
+        Retorno GetByName(string name);
+        Task<bool> Post(ObjectProduct param, IFormFileCollection images);
+        Task<bool> Put(int id, ParamProductEdit param);
         Task<bool> Delete(int id);
     }
 }

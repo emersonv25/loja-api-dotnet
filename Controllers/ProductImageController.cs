@@ -12,20 +12,20 @@ namespace api_loja.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ImagemProdutoController : ControllerBase
+    public class ProductImageController : ControllerBase
     {
-        private readonly IImagemService _imagemService;
+        private readonly IImageService _imageService;
 
-        public ImagemProdutoController(IImagemService imagem)
+        public ProductImageController(IImageService image)
         {
-            _imagemService = imagem;
+            _imageService = image;
         }
-        [HttpGet("{idProduto:int}")]
-        public ActionResult<ICollection<string>> GetByProdutoId(int idProduto)
+        [HttpGet("{productId:int}")]
+        public ActionResult<ICollection<string>> GetByProductId(int productId)
         {
             try
             {
-                ICollection<string> paths = _imagemService.GetUrlByProdutoId(idProduto);
+                ICollection<string> paths = _imageService.GetUrlByProductId(productId);
                 if (paths == null)
                 {
                     return NotFound("Nenhum resultado encontrado");
@@ -38,8 +38,8 @@ namespace api_loja.Controllers
             }
 
         }
-        [HttpPost("{idProduto:int}")]
-        public async Task<ActionResult> Post(int idProduto, IFormFileCollection images)
+        [HttpPost("{productId:int}")]
+        public async Task<ActionResult> Post(int productId, IFormFileCollection images)
         {
             try
             {
@@ -48,8 +48,8 @@ namespace api_loja.Controllers
                 else if (Request.Form.Files.Count == 0)
                     BadRequest("É necessário enviar um arquivo de imagem.");
 
-                List<string> paths = await _imagemService.SaveFiles(images); // Salva as fotos e obtem o path
-                await _imagemService.Post(idProduto, paths); // Salva os paths no banco de dados
+                List<string> paths = await _imageService.SaveFiles(images); // Salva as fotos e obtem o path
+                await _imageService.Post(productId, paths); // Salva os paths no banco de dados
 
                 return Ok("Upload realizado com sucesso");
             }

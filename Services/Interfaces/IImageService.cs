@@ -5,10 +5,10 @@ using Microsoft.AspNetCore.Http;
 
 namespace api_loja.Services.Interfaces
 {
-    public interface IImagemService
+    public interface IImageService
     {
        Task<List<string>> SaveFiles(IFormFileCollection files);
-        Task<bool> Post(int idProduto, List<string> paths);
-        ICollection<string> GetUrlByProdutoId(int idProduto);
+        Task<bool> Post(int productId, List<string> paths);
+        ICollection<string> GetUrlByProductId(int productId);
     }
 }

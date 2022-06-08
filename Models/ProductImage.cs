@@ -4,16 +4,16 @@ using System.Text.Json.Serialization;
 
 namespace api_loja.Models
 {
-    public class ImagemProduto
+    public class ProductImage
     {
         [Key]
-        public int IdImagemProduto { get; set; }
+        public int ProductImageId { get; set; }
         public string Path { get; set; }
 
-        public int IdProduto { get; set; }
-        [ForeignKey("IdProduto")]
+        public int ProductId { get; set; }
+        [ForeignKey("ProductId")]
         [JsonIgnore]
-        public  Produto Produto { get; set; }
+        public  Product Product { get; set; }
 
     }
 }

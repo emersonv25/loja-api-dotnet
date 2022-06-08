@@ -1,5 +1,5 @@
 # api-loja
-Uma api em desenvolvimento para um projeto de e-commerce completo: com produtos,categorias, pedidos, frete, pagamento e etc.
+Uma api em desenvolvimento para um projeto de e-commerce completo: com pedidos,categorias, pedidos, frete, pagamento e etc.
 
 
 ## Tecnologias Utilizadas

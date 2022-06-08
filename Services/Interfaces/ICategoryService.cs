@@ -7,12 +7,12 @@ using api_loja.Models.Object;
 
 namespace api_loja.Services.Interfaces
 {
-    public interface ICategoriaService
+    public interface ICategoryService
     {
-        ICollection<Categoria> GetAll();
-        Categoria GetById(int id);
-        Task<Categoria> Post(ParamCategoria param);
-        Task<bool> Put(int id, ParamCategoria param);
+        ICollection<Category> GetAll();
+        Category GetById(int id);
+        Task<Category> Post(ParamCategory param);
+        Task<bool> Put(int id, ParamCategory param);
         Task<bool> Delete(int id);
     }
 }

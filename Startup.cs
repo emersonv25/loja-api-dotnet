@@ -45,16 +45,16 @@ namespace api_loja
             }
             services.AddControllers();
             services.AddTransient<IAuthService, AuthService>();
-            services.AddTransient<ICategoriaService, CategoriaService>();
-            services.AddTransient<IProdutoService, ProdutoService>();
-            services.AddTransient<IImagemService, ImagemService>();
+            services.AddTransient<ICategoryService, CategoryService>();
+            services.AddTransient<IProductService, ProductService>();
+            services.AddTransient<IImageService, ImageService>();
 
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { 
                     Title = "api_loja", 
                     Version = "v1", 
-                    Description = "API para manipulação de dados referentes a produtos e categorias",
+                    Description = "API para manipulação de dados referentes a products e categories",
                     Contact = new OpenApiContact()
                     {
                         Name = "Emerson",

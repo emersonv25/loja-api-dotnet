@@ -15,32 +15,32 @@ using System.Threading.Tasks;
 
 namespace api_loja.Services
 {
-    public class ImagemService : IImagemService
+    public class ImageService : IImageService
     {
         private readonly IConfiguration _configuration;
         private readonly AppDbContext _db;
 
-        public ImagemService(IConfiguration configuration, AppDbContext context)
+        public ImageService(IConfiguration configuration, AppDbContext context)
         {
             _configuration = configuration;
             _db = context;
         }
-        public ICollection<string> GetUrlByProdutoId(int idProduto)
+        public ICollection<string> GetUrlByProductId(int productId)
         {
-            ICollection<ImagemProduto> imagens = _db.ImagemProduto.Where(i => i.IdProduto == idProduto).ToList();
+            ICollection<ProductImage> images = _db.ProductImage.Where(i => i.ProductId == productId).ToList();
             List<string> urls = new List<string>();
-            foreach(ImagemProduto i in imagens)
+            foreach(ProductImage i in images)
             {
                 urls.Add(Utils.GetFileUrl(i.Path, _configuration["Directories:BaseUrl"], _configuration["Directories:ImagesPath"]));
             }
             return urls;
         }
-        public async Task<bool> Post(int idProduto, List<string> paths)
+        public async Task<bool> Post(int productId, List<string> paths)
         {
             foreach(string path in paths)
             {
-                ImagemProduto imagem = new ImagemProduto { IdProduto = idProduto, Path = path };
-                _db.ImagemProduto.Add(imagem);
+                ProductImage image = new ProductImage { ProductId = productId, Path = path };
+                _db.ProductImage.Add(image);
             }
             await _db.SaveChangesAsync();
 
