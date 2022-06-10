@@ -40,6 +40,23 @@ namespace api_loja.Controllers
             }
         }
 
+        // GET: api/<ProductController>/ByListId
+        [HttpGet("ByListId")]
+        public ActionResult<ICollection<ViewProduct>> GetProductListById([FromBody] int[] ids)
+        {
+            try
+            {
+                ICollection<ViewProduct> result = _productService.GetProductListById(ids);
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Não foi possível realizar a consulta: " + ex.Message);
+            }
+        }
+
+
         // GET api/<ProductController>/5
         [HttpGet("{id:int}")]
         public ActionResult<Product> GetById(int id)

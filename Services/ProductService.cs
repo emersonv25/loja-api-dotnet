@@ -86,7 +86,10 @@ namespace api_loja.Services
         }
         public Result GetByName(string name)
         {
-            ICollection<Product> products = _db.Product.Include(c => c.Category).Include(m => m.ProductType).Include(i => i.ProductImages).Where(i => i.Title.Contains(name) || i.Category.Title.Contains(name) || i.Description.Contains(name)).ToList();
+            ICollection<Product> products = _db.Product.Include(c => c.Category)
+                .Include(m => m.ProductType)
+                .Include(i => i.ProductImages)
+                .Where(i => i.Title.Contains(name) || i.Category.Title.Contains(name) || i.Description.Contains(name)).ToList();
             List<ViewProduct> retornoProduct = new List<ViewProduct>();
             foreach (Product p in products)
             {
@@ -116,6 +119,34 @@ namespace api_loja.Services
 
             return result;
         }
+
+        public ICollection<ViewProduct> GetProductListById(int[] ids)
+        {
+            ICollection<Product> products = _db.Product.Include(c => c.Category).Include(m => m.ProductType).Include(i => i.ProductImages).Where(i => ids.Contains(i.ProductId)).ToList();
+            List<ViewProduct> retornoProduct = new List<ViewProduct>();
+            foreach (Product p in products)
+            {
+                ViewProduct v = new ViewProduct
+                {
+                    ProductId = p.ProductId,
+                    Title = p.Title,
+                    Description = p.Description,
+                    Value = p.Value,
+                    Discount = p.Discount,
+                    ValueWithDiscount = p.Value - p.Discount,
+                    Enabled = p.Enabled,
+                    ProductType = p.ProductType,
+                    CategoryId = p.CategoryId,
+                    Category = p.Category,
+                    Images = GetUrlProductImage(p.ProductImages)
+                };
+                retornoProduct.Add(v);
+            }
+
+            return retornoProduct;
+
+        }
+
         public async Task<bool> Post(ObjectProduct param, IFormFileCollection files)
         {
 
