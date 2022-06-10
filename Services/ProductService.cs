@@ -28,7 +28,7 @@ namespace api_loja.Services
         public Result GetAll()
         {
             ICollection<Product> products = _db.Product.Include(c => c.Category).Include(m => m.ProductType).Include(i => i.ProductImages).ToList();
-            List<ViewProduct> retornoProduct = new List<ViewProduct>();
+            List<ViewProduct> returnProduct = new List<ViewProduct>();
             foreach (Product p in products)
             {
                 ViewProduct v = new ViewProduct
@@ -45,15 +45,15 @@ namespace api_loja.Services
                     Category = p.Category,
                     Images = GetUrlProductImage(p.ProductImages)
                 };
-                retornoProduct.Add(v);
+                returnProduct.Add(v);
             }
 
             #region Retorno
             Result result = new Result();
-            result.TotalResults = retornoProduct.Count();
+            result.TotalResults = returnProduct.Count();
             result.CurrentPage = 1;
-            result.ItemsPerPage = retornoProduct.Count();
-            result.Results = retornoProduct.ToList<dynamic>();
+            result.ItemsPerPage = returnProduct.Count();
+            result.Results = returnProduct.ToList<dynamic>();
             #endregion
 
             return result;
@@ -87,7 +87,7 @@ namespace api_loja.Services
         public Result GetByName(string name)
         {
             ICollection<Product> products = _db.Product.Include(c => c.Category).Include(m => m.ProductType).Include(i => i.ProductImages).Where(i => i.Title.Contains(name) || i.Category.Title.Contains(name) || i.Description.Contains(name)).ToList();
-            List<ViewProduct> retornoProduct = new List<ViewProduct>();
+            List<ViewProduct> returnProduct = new List<ViewProduct>();
             foreach (Product p in products)
             {
                 ViewProduct v = new ViewProduct
@@ -104,14 +104,14 @@ namespace api_loja.Services
                     Category = p.Category,
                     Images = GetUrlProductImage(p.ProductImages)
                 };
-                retornoProduct.Add(v);
+                returnProduct.Add(v);
             }
             #region Retorno
             Result result = new Result();
-            result.TotalResults = retornoProduct.Count();
+            result.TotalResults = returnProduct.Count();
             result.CurrentPage = 1;
-            result.ItemsPerPage = retornoProduct.Count();
-            result.Results = retornoProduct.ToList<dynamic>();
+            result.ItemsPerPage = returnProduct.Count();
+            result.Results = returnProduct.ToList<dynamic>();
             #endregion
 
             return result;
