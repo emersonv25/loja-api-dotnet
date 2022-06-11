@@ -63,5 +63,20 @@ namespace api_loja.Controllers
             }
 
         }
+        [HttpDelete("{imageId:int}")]
+        public async Task<ActionResult> Delete(int imageId)
+        {
+            try
+            {
+                await _imageService.Delete(imageId);
+
+                return Ok("Deletado com sucesso");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Não foi possível deletar a imagem: " + ex.Message);
+            }
+
+        }
     }
 }

@@ -52,6 +52,19 @@ namespace api_loja.Services
 
             return true;
         }
+        public async Task<bool> Delete(int imageId)
+        {
+            ProductImage productImage = await _db.ProductImage.FindAsync(imageId);
+            if (productImage == null)
+            {
+                throw new Exception("Imagem não encontrado");
+            }
+            Utils.DeleteFile(Path.Combine(_configuration["Directories:ImagesPath"], productImage.Path));
+            _db.ProductImage.Remove(productImage);
+            await _db.SaveChangesAsync();
+
+            return true;
+        }
 
     }
 }

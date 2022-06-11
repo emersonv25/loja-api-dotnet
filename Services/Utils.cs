@@ -7,6 +7,8 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using ImageProcessor;
+using ImageProcessor.Plugins.WebP.Imaging.Formats;
 
 namespace api_loja.Services
 {
@@ -34,35 +36,31 @@ namespace api_loja.Services
             return "." + format;
         }
 
-        public static string GenerateNewFileName(string fileName)
-        {
-            var newFileName = (Guid.NewGuid().ToString() + '_' + fileName);
-            newFileName = newFileName.Replace("-", "");
-
-            return newFileName;
-        }
         public static List<string> SaveFiles(IFormFileCollection files, string directoryPath)
         {
 
             List<string> path = new List<string>();
             foreach (var file in files)
             {
-                string fileName = GenerateNewFileName(file.FileName);
+                string newImgWebP = ConvertToWebP(file, directoryPath);
+                /*
+                string fileName = (Guid.NewGuid().ToString() + GetFileFormat(file.FileName));
                 string directory = CreateFilePath(fileName, directoryPath);
                 #region Salva o arquivo em disco
                 byte[] bytesFile = ConvertFileInByteArray(file);
                 System.IO.File.WriteAllBytesAsync(directory, bytesFile);
-
-                /*
+                
+                
                 using (var stream = new FileStream(directory, FileMode.Create))
                 {
                     file.CopyTo(stream);
 
                 }
-                */
                 #endregion
+                */
 
-                path.Add(fileName);
+
+                path.Add(newImgWebP);
             }
 
             return path;
@@ -97,6 +95,30 @@ namespace api_loja.Services
             {
                 file.CopyTo(memoryStream);
                 return memoryStream.ToArray();
+            }
+        }
+        public static string ConvertToWebP(IFormFile image, string directoryPath)
+        {
+            // Salvando no formato WebP
+            string fileName = Guid.NewGuid() + ".webp";
+            string filePath = Path.Combine(directoryPath, fileName);
+            using (var webPFileStream = new FileStream(filePath, FileMode.Create))
+            {
+                using (ImageFactory imageFactory = new ImageFactory(preserveExifData: false))
+                {
+                    imageFactory.Load(image.OpenReadStream()) //carregando os dados da imagem
+                                .Format(new WebPFormat()) //formato
+                                .Quality(70) //qualidade
+                                .Save(webPFileStream); //salvando a imagem
+                }
+            }
+            return fileName;
+        }
+        public static void DeleteFile(string path)
+        {
+            if(File.Exists(path))
+            {
+                File.Delete(path);
             }
         }
         #endregion

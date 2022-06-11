@@ -9,5 +9,6 @@ namespace api_loja.Services.Interfaces
     {
         Task<bool> Post(int productId, IFormFileCollection files);
         ICollection<string> GetUrlByProductId(int productId);
+        Task<bool> Delete(int imageId);
     }
 }
