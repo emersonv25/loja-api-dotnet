@@ -27,7 +27,12 @@ namespace api_loja.Services
         }
         public Result GetAll()
         {
-            ICollection<Product> products = _db.Product.Include(c => c.Category).Include(m => m.ProductType).Include(i => i.ProductImages).ToList();
+            ICollection<Product> products = _db.Product
+                .Include(c => c.Category)
+                .Include(m => m.ProductType)
+                .Include(i => i.ProductImages).ToList();
+
+            #region ViewProduct
             List<ViewProduct> returnProduct = new List<ViewProduct>();
             foreach (Product p in products)
             {
@@ -47,6 +52,7 @@ namespace api_loja.Services
                 };
                 returnProduct.Add(v);
             }
+            #endregion
 
             #region Retorno
             Result result = new Result();
@@ -60,13 +66,18 @@ namespace api_loja.Services
         }
         public ViewProduct GetById(int id)
         {
-            Product p = _db.Product.Include(c => c.Category).Include(m => m.ProductType).Include(i => i.ProductImages).SingleOrDefault(i => i.ProductId == id);
+            Product p = _db.Product
+                .Include(c => c.Category)
+                .Include(m => m.ProductType)
+                .Include(i => i.ProductImages)
+                .SingleOrDefault(i => i.ProductId == id);
 
             if(p == null)
             {
                 return null;
             }
 
+            #region ViewProduct
             ViewProduct viewProduct = new ViewProduct
             {
                 ProductId = p.ProductId,
@@ -81,12 +92,19 @@ namespace api_loja.Services
                 Category = p.Category,
                 Images = GetUrlProductImage(p.ProductImages)
             };
+            #endregion
 
             return viewProduct;
         }
         public Result GetByName(string name)
         {
-            ICollection<Product> products = _db.Product.Include(c => c.Category).Include(m => m.ProductType).Include(i => i.ProductImages).Where(i => i.Title.Contains(name) || i.Category.Title.Contains(name) || i.Description.Contains(name)).ToList();
+            ICollection<Product> products = _db.Product
+                .Include(c => c.Category)
+                .Include(m => m.ProductType)
+                .Include(i => i.ProductImages)
+                .Where(i => i.Title.Contains(name) || i.Category.Title.Contains(name) || i.Description.Contains(name)).ToList();
+
+            #region ViewProduct
             List<ViewProduct> returnProduct = new List<ViewProduct>();
             foreach (Product p in products)
             {
@@ -106,6 +124,8 @@ namespace api_loja.Services
                 };
                 returnProduct.Add(v);
             }
+            #endregion
+
             #region Retorno
             Result result = new Result();
             result.TotalResults = returnProduct.Count();
@@ -117,9 +137,14 @@ namespace api_loja.Services
             return result;
         }
 
-        public ICollection<ViewProduct> GetProductListById(int[] ids)
+        public ICollection<ViewProduct> GetByListId(int[] ids)
         {
-            ICollection<Product> products = _db.Product.Include(c => c.Category).Include(m => m.ProductType).Include(i => i.ProductImages).Where(i => ids.Contains(i.ProductId)).ToList();
+            ICollection<Product> products = _db.Product.Include(c => c.Category)
+                .Include(m => m.ProductType)
+                .Include(i => i.ProductImages)
+                .Where(i => ids.Contains(i.ProductId)).ToList();
+
+            #region ViewProduct
             List<ViewProduct> retornoProduct = new List<ViewProduct>();
             foreach (Product p in products)
             {
@@ -139,6 +164,7 @@ namespace api_loja.Services
                 };
                 retornoProduct.Add(v);
             }
+            #endregion
 
             return retornoProduct;
 
@@ -231,7 +257,7 @@ namespace api_loja.Services
             return true;
 
         }
-        #region Files
+        #region Image
         private List<string> GetUrlProductImage(ICollection<ProductImage> productImage)
         {
             List<string> urls = new List<string>();

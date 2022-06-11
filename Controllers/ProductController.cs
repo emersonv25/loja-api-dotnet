@@ -42,11 +42,11 @@ namespace api_loja.Controllers
 
         // GET: api/<ProductController>/ByListId
         [HttpGet("ByListId")]
-        public ActionResult<ICollection<ViewProduct>> GetProductListById([FromBody] int[] ids)
+        public ActionResult<ICollection<ViewProduct>> GetByListId([FromBody] int[] ids)
         {
             try
             {
-                ICollection<ViewProduct> result = _productService.GetProductListById(ids);
+                ICollection<ViewProduct> result = _productService.GetByListId(ids);
 
                 return Ok(result);
             }

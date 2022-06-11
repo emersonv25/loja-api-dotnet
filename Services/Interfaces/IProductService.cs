@@ -11,10 +11,11 @@ namespace api_loja.Services.Interfaces
     {
         Result GetAll();
         ViewProduct GetById(int id);
+        ICollection<ViewProduct> GetByListId(int[] ids);
         Result GetByName(string name);
         Task<bool> Post(ObjectProduct param, IFormFileCollection images);
         Task<bool> Put(int id, ParamProductEdit param);
         Task<bool> Delete(int id);
-        ICollection<ViewProduct> GetProductListById(int[] ids);
+
     }
 }
