@@ -25,10 +25,11 @@ namespace api_loja.Controllers
             _authService = authService;
         }
 
+        // GET api/<AuthController>/login 
         [HttpPost]
         [Route("login")]
         [AllowAnonymous]
-        public ActionResult<dynamic> Login([FromBody]ParamLogin login)
+        public ActionResult<ViewUserLogin> Login([FromBody]ParamLogin login)
         {
             try
             {
@@ -45,7 +46,7 @@ namespace api_loja.Controllers
 
                 var token = TokenService.GenerateToken(user);
 
-                return new { UserName = user.Username, FullName = user.FullName, Email = user.Email, Token = token };
+                return new ViewUserLogin { Username = user.Username, FullName = user.FullName, Email = user.Email, Token = token };
             }
             catch(Exception ex)
             {
@@ -53,11 +54,11 @@ namespace api_loja.Controllers
             }
 
         }
-        
+        // POST api/<AuthController>/register 
         [HttpPost]
         [Route("register")]
         [AllowAnonymous]
-        public async Task<ActionResult<dynamic>> Post([FromBody]ParamRegister user)
+        public async Task<ActionResult> Post([FromBody]ParamRegister user)
         {
             try
             {
@@ -92,10 +93,10 @@ namespace api_loja.Controllers
                 User newUser = await _authService.Register(user);
                 if (newUser == null)
                 {
-                    return BadRequest(new { error = "Não foi possivel cadastrar o usuário" });
+                    return BadRequest("Não foi possivel cadastrar o usuário");
                 }
 
-                return ("Usuário cadastrado com sucesso !");
+                return Ok("Usuário cadastrado com sucesso !");
             }
             catch (Exception ex)
             {
@@ -103,10 +104,11 @@ namespace api_loja.Controllers
             }
 
         }
+        // PUT api/<AuthController>/admin/{id} 
         [HttpPut]
-        [Route("admin/update")]
+        [Route("admin/update/{id:int}")]
         [Authorize(Roles = "admin")]
-        public async Task<ActionResult<dynamic>> UpdateAdmin(int id, User usuarioEditado)
+        public async Task<ActionResult> UpdateAdmin(int id, User usuarioEditado)
         {
             try
             {
@@ -116,7 +118,7 @@ namespace api_loja.Controllers
                     return BadRequest("Falha ao editar usuário");
                 }
 
-                return ("Usuário editado com sucesso !");
+                return Ok("Usuário editado com sucesso !");
             }
             catch (Exception ex)
             {
@@ -124,10 +126,11 @@ namespace api_loja.Controllers
             }
 
         }
+        // PUT api/<AuthController>/update/{id}
         [HttpPut]
-        [Route("update")]
+        [Route("update/{id:int}")]
         [Authorize]
-        public async Task<ActionResult<dynamic>> Update(int id, User userEdited)
+        public async Task<ActionResult> Update(int id, User userEdited)
         {
             try
             {
@@ -137,7 +140,7 @@ namespace api_loja.Controllers
                     return BadRequest("Falha ao editar usuário");
                 }
 
-                return ("Usuário editado com sucesso !");
+                return Ok("Usuário editado com sucesso !");
 
             }
             catch (Exception ex)
@@ -146,10 +149,11 @@ namespace api_loja.Controllers
             }
 
         }
+        // DELETE api/<AuthController>/admin/delete/{id} 
         [HttpDelete]
-        [Route("admin/delete")]
+        [Route("admin/delete/{id:int}")]
         [Authorize(Roles = "admin")]
-        public async Task<ActionResult<dynamic>> DeleteUserAdm(int id)
+        public async Task<ActionResult> DeleteUserAdm(int id)
         {
 
             try
@@ -160,7 +164,7 @@ namespace api_loja.Controllers
                     return BadRequest("Falha ao deletar usuário");
                 }
 
-                return ("Usuário deletado com sucesso !");
+                return Ok("Usuário deletado com sucesso !");
             }
             catch (Exception ex)
             {

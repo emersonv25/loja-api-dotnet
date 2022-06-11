@@ -35,42 +35,22 @@ namespace api_loja.Services
             }
             return urls;
         }
-        public async Task<bool> Post(int productId, List<string> paths)
+        public async Task<bool> Post(int productId, IFormFileCollection files)
         {
-            foreach(string path in paths)
+            Product product = _db.Product.Find(productId);
+            if(product == null)
             {
-                ProductImage image = new ProductImage { ProductId = productId, Path = path };
+                throw new Exception("Produto não encontrado");
+            }
+            List<string> paths = Utils.SaveFiles(files, _configuration["Directories:ImagesPath"]); // Salva as fotos e obtem o path
+            foreach (string path in paths)
+            {
+                ProductImage image = new ProductImage { ProductId = product.ProductId, Path = path };
                 _db.ProductImage.Add(image);
             }
             await _db.SaveChangesAsync();
 
             return true;
-        }
-        public async Task<List<string>> SaveFiles(IFormFileCollection files)
-        {
-            List<string> path = new List<string>();
-            foreach (var file in files)
-            {
-                string fileName = Utils.GenerateNewFileName(file.FileName);
-                string directory = Utils.CreateFilePath(fileName, _configuration["Directories:ImagesPath"]);
-                #region Salva o arquivo em disco
-                byte[] bytesFile = Utils.ConvertFileInByteArray(file);
-                await System.IO.File.WriteAllBytesAsync(directory, bytesFile);
-
-                /*
-                using (var stream = new FileStream(directory, FileMode.Create))
-                {
-                    file.CopyTo(stream);
-
-                }
-                */
-                #endregion
-
-                path.Add(fileName);
-            }
-
-            return path;
-
         }
 
     }

@@ -7,8 +7,7 @@ namespace api_loja.Services.Interfaces
 {
     public interface IImageService
     {
-       Task<List<string>> SaveFiles(IFormFileCollection files);
-        Task<bool> Post(int productId, List<string> paths);
+        Task<bool> Post(int productId, IFormFileCollection files);
         ICollection<string> GetUrlByProductId(int productId);
     }
 }

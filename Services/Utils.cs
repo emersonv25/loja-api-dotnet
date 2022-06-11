@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace api_loja.Services
@@ -26,7 +27,7 @@ namespace api_loja.Services
 
             return Sb.ToString();
         }
-        #region Utils
+        #region Manipulação de arquivos
         public static string GetFileFormat(string fullFileName)
         {
             var format = fullFileName.Split(".").Last();
@@ -35,13 +36,14 @@ namespace api_loja.Services
 
         public static string GenerateNewFileName(string fileName)
         {
-            var newFileName = (Guid.NewGuid().ToString() + "_" + fileName).ToLower();
+            var newFileName = (Guid.NewGuid().ToString() + '_' + fileName);
             newFileName = newFileName.Replace("-", "");
 
             return newFileName;
         }
         public static List<string> SaveFiles(IFormFileCollection files, string directoryPath)
         {
+
             List<string> path = new List<string>();
             foreach (var file in files)
             {

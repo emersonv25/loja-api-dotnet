@@ -40,7 +40,7 @@ namespace api_loja.Controllers
             }
         }
 
-        // GET: api/<ProductController>/ByListId
+        // GET: api/<ProductController>/ByListId/
         [HttpGet("ByListId")]
         public ActionResult<ICollection<ViewProduct>> GetByListId([FromBody] int[] ids)
         {
@@ -57,7 +57,7 @@ namespace api_loja.Controllers
         }
 
 
-        // GET api/<ProductController>/5
+        // GET api/<ProductController>/{id}
         [HttpGet("{id:int}")]
         public ActionResult<Product> GetById(int id)
         {
@@ -73,7 +73,7 @@ namespace api_loja.Controllers
                 return BadRequest("Não foi possível realizar a consulta: " + ex.Message);
             }
         }
-        // GET api/<CategoryController>/Placa
+        // GET api/<ProductController>/{name}
         [HttpGet("{name}")]
         public ActionResult<ICollection<Product>> GetByName(string name)
         {
@@ -96,7 +96,11 @@ namespace api_loja.Controllers
                 if (param.Files.Count == 0 && Request.Form.Files.Count > 0)
                     param.Files = Request.Form.Files;
                 else if (Request.Form.Files.Count == 0)
-                    BadRequest("É necessário enviar ao menos 1 image para o product.");
+                    return BadRequest ("É necessário enviar ao menos 1 image para o product.");
+                if (!param.Files.Any(f => f.ContentType.Contains("image")))
+                {
+                    return BadRequest("Formato não suportado, insira um arquivo de imagem");
+                }
 
                 ObjectProduct product = JsonConvert.DeserializeObject<ObjectProduct>(param.Json.ToString());
 
@@ -113,7 +117,7 @@ namespace api_loja.Controllers
 
         }
 
-        // PUT api/<ProductController>/5
+        // PUT api/<ProductController>/{id}
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(int id, [FromBody] ParamProductEdit param)
         {
@@ -128,7 +132,7 @@ namespace api_loja.Controllers
             }
         }
 
-        // DELETE api/<ProductController>/5
+        // DELETE api/<ProductController>/{id}
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {

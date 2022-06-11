@@ -21,7 +21,7 @@ namespace api_loja.Controllers
             _db = context;
         }
 
-        // GET api/<ProductTypeController>/5
+        // GET api/<ProductTypeController>/{id}
         [HttpGet("{id:int}")]
         public ActionResult<ProductType> GetById(int id)
         {
@@ -50,7 +50,7 @@ namespace api_loja.Controllers
 
         }
 
-        // PUT api/<ProductTypeController>/5
+        // PUT api/<ProductTypeController>/{id}
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(int id, [FromBody] ParamEditProductType param)
         {
@@ -82,7 +82,7 @@ namespace api_loja.Controllers
             }
         }
 
-        // DELETE api/<ProductTypeController>/5
+        // DELETE api/<ProductTypeController>/{id}
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {

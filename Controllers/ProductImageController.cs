@@ -1,4 +1,5 @@
-﻿using api_loja.Services.Interfaces;
+﻿using api_loja.Services;
+using api_loja.Services.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -39,17 +40,20 @@ namespace api_loja.Controllers
 
         }
         [HttpPost("{productId:int}")]
-        public async Task<ActionResult> Post(int productId, IFormFileCollection images)
+        public async Task<ActionResult> Post(int productId, IFormFileCollection files)
         {
             try
             {
-                if (images.Count == 0 && Request.Form.Files.Count > 0)
-                    images = Request.Form.Files;
+                if (files.Count == 0 && Request.Form.Files.Count > 0)
+                    files = Request.Form.Files;
                 else if (Request.Form.Files.Count == 0)
-                    BadRequest("É necessário enviar um arquivo de imagem.");
+                    return BadRequest("É necessário enviar um arquivo de imagem.");
 
-                List<string> paths = await _imageService.SaveFiles(images); // Salva as fotos e obtem o path
-                await _imageService.Post(productId, paths); // Salva os paths no banco de dados
+                if (!files.Any(f => f.ContentType.Contains("image")))
+                {
+                    return BadRequest("Formato não suportado, insira um arquivo de imagem");
+                }
+                await _imageService.Post(productId, files); // Salva os paths no banco de dados
 
                 return Ok("Upload realizado com sucesso");
             }

@@ -20,7 +20,7 @@ namespace api_loja.Controllers
             _categoryService = categoryService;
         }
 
-
+        // GET api/<CategoryController>
         [HttpGet]
         public ActionResult<ICollection<Category>> GetAll()
         {
@@ -37,7 +37,7 @@ namespace api_loja.Controllers
 
         }
 
-
+        // GET api/<CategoryController>/{id}
         [HttpGet("{id:int}")]
         public ActionResult<Category> GetById(int id)
         {
@@ -57,6 +57,7 @@ namespace api_loja.Controllers
 
         }
 
+        // POST api/<CategoryController>
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] ParamCategory param)
         {
@@ -72,7 +73,7 @@ namespace api_loja.Controllers
 
         }
 
-
+        // PUT api/<CategoryController>
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(int id, [FromBody] ParamCategory param)
         {
@@ -87,6 +88,7 @@ namespace api_loja.Controllers
             }
         }
 
+        // DELETE api/<CategoryController>
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
