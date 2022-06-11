@@ -25,15 +25,16 @@ namespace api_loja.Services
             _configuration = configuration;
             _db = context;
         }
-        public ICollection<string> GetUrlByProductId(int productId)
+        public ICollection<ViewImage> GetUrlByProductId(int productId)
         {
             ICollection<ProductImage> images = _db.ProductImage.Where(i => i.ProductId == productId).ToList();
-            List<string> urls = new List<string>();
+            List<ViewImage> viewImages = new List<ViewImage>();
             foreach(ProductImage i in images)
             {
-                urls.Add(Utils.GetFileUrl(i.Path, _configuration["Directories:BaseUrl"], _configuration["Directories:ImagesPath"]));
+                string url = Utils.GetFileUrl(i.Path, _configuration["Directories:BaseUrl"], _configuration["Directories:ImagesPath"]);
+                viewImages.Add( new ViewImage{ ProductImageId = i.ProductImageId, Url =  url});
             }
-            return urls;
+            return viewImages;
         }
         public async Task<bool> Post(int productId, IFormFileCollection files)
         {

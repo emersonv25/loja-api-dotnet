@@ -1,4 +1,5 @@
-﻿using api_loja.Services;
+﻿using api_loja.Models.Object;
+using api_loja.Services;
 using api_loja.Services.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -22,16 +23,16 @@ namespace api_loja.Controllers
             _imageService = image;
         }
         [HttpGet("{productId:int}")]
-        public ActionResult<ICollection<string>> GetByProductId(int productId)
+        public ActionResult<ICollection<ViewImage>> GetByProductId(int productId)
         {
             try
             {
-                ICollection<string> paths = _imageService.GetUrlByProductId(productId);
-                if (paths == null)
+                ICollection<ViewImage> viewImage = _imageService.GetUrlByProductId(productId);
+                if (viewImage == null)
                 {
                     return NotFound("Nenhum resultado encontrado");
                 }
-                return Ok(paths);
+                return Ok(viewImage);
             }
             catch (Exception ex)
             {
