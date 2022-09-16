@@ -25,7 +25,10 @@ namespace api_loja.Controllers
             _authService = authService;
         }
 
-        // GET api/<AuthController>/login 
+        /// <summary>
+        /// Login, obtem o token do usuário através de seu username e senha
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
         [Route("login")]
         [AllowAnonymous]
@@ -54,7 +57,10 @@ namespace api_loja.Controllers
             }
 
         }
-        // POST api/<AuthController>/register 
+        /// <summary>
+        /// Registra o usuário
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
         [Route("register")]
         [AllowAnonymous]
@@ -104,7 +110,11 @@ namespace api_loja.Controllers
             }
 
         }
-        // PUT api/<AuthController>/admin/{id} 
+        /// <summary>
+        /// Edita um usuário especifico
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPut]
         [Route("admin/update/{id:int}")]
         [Authorize(Roles = "admin")]
@@ -126,7 +136,11 @@ namespace api_loja.Controllers
             }
 
         }
-        // PUT api/<AuthController>/update/{id}
+        /// <summary>
+        /// Permite o proprio usuário editar seus dados
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPut]
         [Route("update/{id:int}")]
         [Authorize]
@@ -149,7 +163,11 @@ namespace api_loja.Controllers
             }
 
         }
-        // DELETE api/<AuthController>/admin/delete/{id} 
+        /// <summary>
+        /// Deleta um usuário especifico
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete]
         [Route("admin/delete/{id:int}")]
         [Authorize(Roles = "admin")]
@@ -173,18 +191,20 @@ namespace api_loja.Controllers
 
         }
 
-
+        /// <summary>
+        /// Verifica se está autenticado
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Route("authenticated")]
         [Authorize]
         public string Autenticado() {
             return String.Format("Autenticado: {0}", User.Identity.Name);
          }
-
-        [HttpGet]
-        [Route("anonymous")]
-        public string Anonimo() => "Anônimo";
-
+        /// <summary>
+        /// Verifica se tem permissão de administrador
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Route("admin")]
         [Authorize(Roles = "admin")]

@@ -13,6 +13,9 @@ using System;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using System.Reflection;
+using System.IO;
+using System.Collections.Generic;
 
 namespace api_loja
 {
@@ -74,12 +77,12 @@ namespace api_loja
             });
 
             // Swagger
-            services.AddSwaggerGen(c =>
+            services.AddSwaggerGen(options =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { 
+                options.SwaggerDoc("v1", new OpenApiInfo { 
                     Title = "api_loja", 
                     Version = "v1", 
-                    Description = "API para manipulação de dados referentes a products e categories",
+                    Description = "API loja em desenvolvimento",
                     Contact = new OpenApiContact()
                     {
                         Name = "Emerson",
@@ -87,8 +90,42 @@ namespace api_loja
                         Url = new Uri("https://www.linkedin.com/in/emerson-de-jesus-santos-303640195/")
                     },
                 });
+                // using System.Reflection;
+                var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 
+                var security = new Dictionary<string, IEnumerable<string>>
+                {
+                    {"Bearer", new string[] { }},
+                };
+
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = @"JWT Authorization header using the Bearer scheme.
+                   \r\n\r\n Enter 'Bearer'[space] and then your token in the text input below.
+                    \r\n\r\nExample: 'Bearer 12345abcdef'",
+                });
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                          new OpenApiSecurityScheme
+                          {
+                              Reference = new OpenApiReference
+                              {
+                                  Type = ReferenceType.SecurityScheme,
+                                  Id = "Bearer"
+                              }
+                          },
+                         new string[] {}
+                    }
+                });
             });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
