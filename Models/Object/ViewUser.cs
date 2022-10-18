@@ -5,12 +5,18 @@ using System.Threading.Tasks;
 
 namespace api_loja.Models.Object
 {
-    public class ViewUserLogin
+    public class ViewUser
     {
-        public ViewUser User { get; set; }
+        public ViewUser(string username, string fullName, string email, string token)
+        {
+            this.User = new ViewUserData { Username = username, FullName = fullName, Email = email };
+            this.Token = token;
+        }
+
+        public ViewUserData User { get; set; }
         public string Token { get; set; }
     }
-    public class ViewUser
+    public class ViewUserData
     {
         public string Username { get; set; }
         public string FullName { get; set; }

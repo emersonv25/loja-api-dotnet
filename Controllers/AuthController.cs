@@ -32,7 +32,7 @@ namespace api_loja.Controllers
         [HttpPost]
         [Route("login")]
         [AllowAnonymous]
-        public ActionResult<ViewUserLogin> Login([FromBody]ParamLogin login)
+        public ActionResult<ViewUser> Login([FromBody]ParamLogin login)
         {
             try
             {
@@ -49,7 +49,7 @@ namespace api_loja.Controllers
 
                 var token = TokenService.GenerateToken(user);
 
-                return new ViewUserLogin { User = { Username = user.Username,  FullName = user.FullName, Email = user.Email}, Token = token };
+                return new ViewUser(user.Username, user.FullName, user.Email, token); ;
             }
             catch(Exception ex)
             {
