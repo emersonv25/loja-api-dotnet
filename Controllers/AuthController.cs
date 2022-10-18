@@ -49,7 +49,7 @@ namespace api_loja.Controllers
 
                 var token = TokenService.GenerateToken(user);
 
-                return new ViewUserLogin { Username = user.Username, FullName = user.FullName, Email = user.Email, Token = token };
+                return new ViewUserLogin { User = { Username = user.Username,  FullName = user.FullName, Email = user.Email}, Token = token };
             }
             catch(Exception ex)
             {
