@@ -33,18 +33,20 @@ namespace api_loja
         {
             // Banco de dados
             string db = Configuration.GetConnectionString("DB");
-            if(db == "mssql")
+            if (db == "mssql")
             {
                 string msSqlConnection = Configuration.GetConnectionString("MsSqlConnection");
-                services.AddDbContextPool<AppDbContext>(options => {
+                services.AddDbContextPool<AppDbContext>(options =>
+                {
                     options.UseSqlServer(msSqlConnection);
                     //options.UseLazyLoadingProxies();
                 });
             }
-            else if(db == "mysql")
+            else if (db == "mysql")
             {
                 string mySqlConnection = Configuration.GetConnectionString("MySqlConnection");
-                services.AddDbContext<AppDbContext>(options => {
+                services.AddDbContext<AppDbContext>(options =>
+                {
                     options.UseMySql(mySqlConnection, ServerVersion.AutoDetect(mySqlConnection));
                     //options.UseLazyLoadingProxies();
                 });
@@ -79,9 +81,10 @@ namespace api_loja
             // Swagger
             services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc("v1", new OpenApiInfo { 
-                    Title = "api_loja", 
-                    Version = "v1", 
+                options.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "api_loja",
+                    Version = "v1",
                     Description = "API loja em desenvolvimento",
                     Contact = new OpenApiContact()
                     {
@@ -99,29 +102,27 @@ namespace api_loja
                     {"Bearer", new string[] { }},
                 };
 
-                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
-                    Name = "Authorization",
-                    Type = SecuritySchemeType.ApiKey,
-                    Scheme = "Bearer",
-                    BearerFormat = "JWT",
                     In = ParameterLocation.Header,
-                    Description = @"JWT Authorization header using the Bearer scheme.
-                   \r\n\r\n Enter 'Bearer'[space] and then your token in the text input below.
-                    \r\n\r\nExample: 'Bearer 12345abcdef'",
+                    Description = "Please enter a valid token",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.Http,
+                    BearerFormat = "JWT",
+                    Scheme = "Bearer"
                 });
                 options.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
                     {
-                          new OpenApiSecurityScheme
-                          {
-                              Reference = new OpenApiReference
-                              {
-                                  Type = ReferenceType.SecurityScheme,
-                                  Id = "Bearer"
-                              }
-                          },
-                         new string[] {}
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type=ReferenceType.SecurityScheme,
+                                Id="Bearer"
+                            }
+                        },
+                        new string[]{}
                     }
                 });
             });
@@ -150,7 +151,7 @@ namespace api_loja
             app.UseAuthentication();
 
             app.UseAuthorization();
-            
+
             app.UseStaticFiles();
             app.UseEndpoints(endpoints =>
             {
